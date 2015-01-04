@@ -1,10 +1,4 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2015-01-04T16:39:34
-#
-#-------------------------------------------------
-
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,6 +7,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    login.cpp \
+    connection.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    login.h \
+    connection.h
