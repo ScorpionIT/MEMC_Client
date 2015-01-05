@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "login.h"
+#include "filemanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -7,6 +8,9 @@ int main(int argc, char *argv[])
 
     Login login;
     login.show();
+
+    FileManager fileManager;
+    fileManager.show();
 
     return a.exec();
 }

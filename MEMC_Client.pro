@@ -9,8 +9,10 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     login.cpp \
-    connection.cpp
+    connection.cpp \
+    filemanager.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
-    connection.h
+    connection.h \
+    filemanager.h
