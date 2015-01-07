@@ -1,16 +1,13 @@
 #include <QApplication>
-#include "login.h"
-#include "filemanager.h"
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    Login login;
-    login.show();
-
-    FileManager fileManager;
-    fileManager.show();
+    MainWindow mainWin;
+    mainWin.configureToolBar();
+    mainWin.show();
 
     return a.exec();
 }

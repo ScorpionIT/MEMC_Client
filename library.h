@@ -3,19 +3,19 @@
 
 #include <QWidget>
 #include <QDir>
-#include <QPushButton>
 #include <QListWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include "mpushbutton.h"
 
 class FileManager : public QWidget
 {
     Q_OBJECT
 
 private:
-    QPushButton* movieButton;
-    QPushButton* musicButton;
-    QPushButton* imageButton;
+    MPushButton* movieButton;
+    MPushButton* musicButton;
+    MPushButton* imageButton;
     QListWidget* fileList;
     QHBoxLayout* buttonsLayout;
     QVBoxLayout* vLayout;
@@ -29,7 +29,7 @@ signals:
 private slots:
     void movieButtonPressed();
     void musicButtonPressed();
-    void photoButtonPressed();
+    void imageButtonPressed();
 };
 
 #endif // FILEMANAGER_H
