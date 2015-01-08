@@ -7,8 +7,10 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include "mpushbutton.h"
+#include "connection.h"
+#include "fileservice.h"
 
-class FileManager : public QWidget
+class Library : public QWidget
 {
     Q_OBJECT
 
@@ -19,14 +21,17 @@ private:
     QListWidget* fileList;
     QHBoxLayout* buttonsLayout;
     QVBoxLayout* vLayout;
+    FileService* fileService;
+    Connection* connection;
 
 public:
-    FileManager(QWidget *parent = 0);
-    ~FileManager();
+    Library(Connection* conn, QWidget *parent = 0);
+    ~Library();
 
 signals:
 
 private slots:
+    void loadFileList( QStringList* fileList, QString response );
     void movieButtonPressed();
     void musicButtonPressed();
     void imageButtonPressed();

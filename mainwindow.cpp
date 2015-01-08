@@ -5,8 +5,15 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     this->resize( 800, 600);
-    this->library = new FileManager();
-    this->fileUploader = new FileUploader();
+    this->connection = nullptr;
+}
+
+MainWindow::~MainWindow()
+{
+    if ( this->connection != nullptr )
+        delete this->connection;
+    delete this->library;
+    delete this->fileUploader;
 }
 
 void MainWindow::configureToolBar()
@@ -36,8 +43,15 @@ void MainWindow::configureToolBar()
     this->settingsButton->setFlat( true );
     this->settingsButton->setStyleSheet( "color: white;" );
     this->toolBar->addWidget( this->settingsButton );
+}
 
+void MainWindow::newConnection(Connection *conn)
+{
+    this->connection = conn;
+    this->library = new Library( this->connection );
+    this->fileUploader = new FileUploader();
     this->libraryButtonPressed();
+    this->show();
 }
 
 void MainWindow::libraryButtonPressed()
@@ -71,7 +85,3 @@ void MainWindow::settingsButtonPressed()
     this->setCentralWidget( nullptr );
 }
 
-MainWindow::~MainWindow()
-{
-
-}

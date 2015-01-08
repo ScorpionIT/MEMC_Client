@@ -14,7 +14,8 @@ SOURCES += main.cpp\
     fileuploader.cpp \
     mpushbutton.cpp \
     library.cpp \
-    serviceconnection.cpp
+    serviceconnection.cpp \
+    fileservice.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -22,4 +23,5 @@ HEADERS  += mainwindow.h \
     fileuploader.h \
     mpushbutton.h \
     library.h \
-    serviceconnection.h
+    serviceconnection.h \
+    fileservice.h

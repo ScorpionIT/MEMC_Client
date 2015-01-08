@@ -8,6 +8,9 @@
 #include "library.h"
 #include "fileuploader.h"
 
+#include "connection.h"
+#include "fileservice.h"
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -17,15 +20,17 @@ private:
     MPushButton* libraryButton;
     MPushButton* uploadButton;
     MPushButton* settingsButton;
-    FileManager* library;
+    Library* library;
     FileUploader* fileUploader;
 
 public:
     MainWindow(QWidget *parent = 0);
+    Connection* connection;
     ~MainWindow();
     void configureToolBar();
 
 private slots:
+    void newConnection( Connection* conn );
     void libraryButtonPressed();
     void uploadButtonPressed();
     void settingsButtonPressed();

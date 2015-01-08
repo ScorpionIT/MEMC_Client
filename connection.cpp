@@ -13,7 +13,7 @@ Connection::Connection(QString serverAddr, QString username, QString password)
         this->server->waitForReadyRead( Connection::SESSION_TIMER );
         response = this->server->readLine();
         response.chop( 1 );
-        qDebug() << response;
+        //qDebug() << response;
 
         this->server->write( QString (username + "\n").toUtf8() );
         this->server->waitForBytesWritten( -1 );
@@ -21,7 +21,7 @@ Connection::Connection(QString serverAddr, QString username, QString password)
         this->server->waitForReadyRead( Connection::SESSION_TIMER );
         response = this->server->readLine();
         response.chop( 1 );
-        qDebug() << response;
+        //qDebug() << response;
         if (response == "pls pw")
         {
             this->server->write( QString (password + "\n").toUtf8() );
@@ -30,14 +30,14 @@ Connection::Connection(QString serverAddr, QString username, QString password)
             this->server->waitForReadyRead( Connection::SESSION_TIMER );
             response = this->server->readLine();
             response.chop( 1 );
-            qDebug() << response;
+            //qDebug() << response;
             if (response == "ok")
             {
                 if (this->server->bytesAvailable() == 0)
                     this->server->waitForReadyRead( Connection::SESSION_TIMER );
                 response = this->server->readLine();
                 response.chop( 1 );
-                qDebug() << response;
+                //qDebug() << response;
                 if (response.split( "=" )[0] == "s.id")
                 {
                     this->sessionID = response.split( "=" )[1];
@@ -45,7 +45,7 @@ Connection::Connection(QString serverAddr, QString username, QString password)
                         this->server->waitForReadyRead( Connection::SESSION_TIMER );
                     response = this->server->readLine();
                     response.chop( 1 );
-                    qDebug() << response;
+                    //qDebug() << response;
                     connect ( this->server, SIGNAL( readyRead() ), this, SLOT ( procesMessage() ) );
                     connect (this->server, SIGNAL( disconnected() ), this, SLOT( closeConnection() ) );
                     procesMessage();
@@ -88,7 +88,7 @@ void Connection::procesMessage()
         QString message;
         message = this->server->readLine();
         message.chop ( 1 );
-        qDebug() << message;
+        //qDebug() << message;
         if ( message == "are you there?" )
         {
             this->server->write ("no\n");

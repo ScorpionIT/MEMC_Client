@@ -63,6 +63,7 @@ void Login::loginButtonPressed()
     {
         this->loginButton->setText( "Connected" );
         emit loginSuccesful(connection);
+        delete this;
     }
     else
     {

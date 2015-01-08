@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "mainwindow.h"
+#include "login.h"
 
 int main(int argc, char *argv[])
 {
@@ -7,7 +8,10 @@ int main(int argc, char *argv[])
 
     MainWindow mainWin;
     mainWin.configureToolBar();
-    mainWin.show();
+
+    Login* login = new Login();
+    QObject::connect (login, SIGNAL( loginSuccesful(Connection*) ), &mainWin, SLOT( newConnection(Connection*) ) );
+    login->show();
 
     return a.exec();
 }

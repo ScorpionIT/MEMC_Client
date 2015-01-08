@@ -1,7 +1,7 @@
 #include "library.h"
-FileManager::FileManager(QWidget *parent) : QWidget(parent)
+Library::Library(Connection *conn, QWidget *parent) : QWidget(parent)
 {
-
+    this->connection = conn;
     this->buttonsLayout = new QHBoxLayout();
     this->movieButton = new MPushButton( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/movie.png" ), "MOVIES" );
     connect ( this->movieButton, SIGNAL( clicked() ), this, SLOT( movieButtonPressed() ) );
@@ -26,12 +26,23 @@ FileManager::FileManager(QWidget *parent) : QWidget(parent)
     this->movieButtonPressed();
 }
 
-FileManager::~FileManager()
+Library::~Library()
 {
 
 }
 
-void FileManager::movieButtonPressed()
+void Library::loadFileList(QStringList *fileList, QString response)
+{
+    if (response == "end")
+    {
+        for (int i = 0; i < fileList->size(); i++ )
+            new QListWidgetItem( fileList->at( i ), this->fileList );
+        delete fileList;
+    }
+    delete sender();
+}
+
+void Library::movieButtonPressed()
 {
     this->movieButton->setEnabled( false );
     this->musicButton->setEnabled( true );
@@ -40,9 +51,13 @@ void FileManager::movieButtonPressed()
                                 "background-position: bottom right; "
                                 "background-repeat: no-repeat;"
                                 "background-color: white;");
+    this->fileList->clear();
+    this->fileService = new FileService (FileType::MOVIE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
+    connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
+    this->fileService->start();
 }
 
-void FileManager::musicButtonPressed()
+void Library::musicButtonPressed()
 {
     this->movieButton->setEnabled( true );
     this->musicButton->setEnabled( false );
@@ -51,9 +66,14 @@ void FileManager::musicButtonPressed()
                                 "background-position: bottom right; "
                                 "background-repeat: no-repeat;"
                                 "background-color: white;");
+
+    this->fileList->clear();
+    this->fileService = new FileService (FileType::MUSIC, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
+    connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
+    this->fileService->start();
 }
 
-void FileManager::imageButtonPressed()
+void Library::imageButtonPressed()
 {
     this->movieButton->setEnabled( true );
     this->musicButton->setEnabled( true );
@@ -62,5 +82,10 @@ void FileManager::imageButtonPressed()
                                 "background-position: bottom right; "
                                 "background-repeat: no-repeat;"
                                 "background-color: white;");
+
+    this->fileList->clear();
+    this->fileService = new FileService (FileType::IMAGE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
+    connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
+    this->fileService->start();
 }
 
