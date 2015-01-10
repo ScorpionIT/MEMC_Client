@@ -9,7 +9,6 @@ Uploader::Uploader(QVector<QFileInfo>* toUpload, QString serverAddr, QString ser
 
 Uploader::~Uploader()
 {
-    delete this->toUpload;
 }
 
 void Uploader::stopUpload()

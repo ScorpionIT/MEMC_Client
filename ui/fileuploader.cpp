@@ -116,5 +116,6 @@ void FileUploader::uploadFinished(QString error)
     }
     else
         this->progressBar->setFormat( error );
+    delete sender();
 }
 
