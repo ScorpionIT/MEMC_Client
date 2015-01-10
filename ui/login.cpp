@@ -2,6 +2,7 @@
 
 Login::Login(QWidget *parent) : QWidget(parent)
 {
+    this->setWindowTitle( "MEMC - Login");
     this->hLayout = new QHBoxLayout();
     this->serverAddressLabel = new QLabel ( "Server Address" );
     this->serverAddressLabel->setMinimumWidth ( 100 );
@@ -20,6 +21,7 @@ Login::Login(QWidget *parent) : QWidget(parent)
     this->passwordLabel = new QLabel ( "Password" );
     this->passwordLabel->setMinimumWidth ( 100 );
     this->password = new QLineEdit ();
+    this->password->setEchoMode( QLineEdit::Password );
     this->hLayout3->addWidget( this->passwordLabel );
     this->hLayout3->addWidget( this->password );
 
@@ -32,6 +34,13 @@ Login::Login(QWidget *parent) : QWidget(parent)
     this->vLayout->addLayout( this->hLayout3 );
     this->vLayout->addWidget( this->loginButton );
     this->setLayout( vLayout );
+
+    // DEBUG FAST LOGIN
+    this->serverAddress->setText( "127.0.0.1" );
+    this->username->setText( "Elia" );
+    this->password->setText( "elia" );
+    // DEBUG FAST LOGIN
+
 }
 
 Login::~Login()

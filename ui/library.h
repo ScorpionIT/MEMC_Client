@@ -7,8 +7,9 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include "mpushbutton.h"
-#include "connection.h"
-#include "fileservice.h"
+#include "core/connection.h"
+#include "core/fileservice.h"
+#include <ui/musicmediainfo.h>
 
 class Library : public QWidget
 {
@@ -20,6 +21,7 @@ private:
     MPushButton* imageButton;
     QListWidget* fileList;
     QHBoxLayout* buttonsLayout;
+    QHBoxLayout* hLayout;
     QVBoxLayout* vLayout;
     FileService* fileService;
     Connection* connection;

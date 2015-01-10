@@ -12,7 +12,7 @@ ServiceConnection::ServiceConnection(QString serverAddr, QString serverPort, QSt
 
 ServiceConnection::~ServiceConnection()
 {
-    qDebug() << "Destroy";
+    qDebug() << "Service connection closed";
     this->server->close();
     delete this->server;
 }
@@ -21,14 +21,13 @@ void ServiceConnection::run()
 {
     this->lastError = "";
     this->server = new QTcpSocket();
-    this->server->connectToHost( this->serverAddr, 80001 );
+    this->server->connectToHost( this->serverAddr, this->serverPort.toInt() );
     if ( this->server->waitForConnected( ServiceConnection::SESSION_TIMER ) )
     {
         QString response;
         this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         response = this->server->readLine();
         response.chop( 1 );
-        qDebug() << response;
 
         this->server->write( QString (this->username + " " + this->sessionID + "\n").toUtf8() );
         this->server->waitForBytesWritten( -1 );
@@ -36,20 +35,14 @@ void ServiceConnection::run()
         this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         response = this->server->readLine();
         response.chop( 1 );
-        qDebug() << response;
 
         if (response == "refused")
         {
-            this->lastError = "Connection refused";
+             qDebug() << "Connection refused";
         }
         else if (response == "ok")
             this->processService( this->server );
     }
     else
-        this->lastError = "Connection timeout";
-}
-
-QString ServiceConnection::getLastError()
-{
-    return this->lastError;
+        qDebug() <<  "Connection timeout";
 }

@@ -26,8 +26,6 @@ protected:
 public:
     ServiceConnection( QString serverAddr, QString serverPort, QString username, QString sessionID);
     ~ServiceConnection();
-    QString getLastError();
-
 };
 
 #endif // SERVICECONNECTION_H

@@ -21,10 +21,8 @@ void FileService::processService(QTcpSocket *server)
         server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         message = server->readLine();
         message.chop( 1 );
-        qDebug() << message;
         if (message == "? [MUSIC=1, VIDEOS=2, IMAGES=3]")
         {
-            qDebug() << QString ( QString::number( type ) );
             server->write( QString ( QString::number( type ) + "\n" ).toUtf8() );
             server->waitForBytesWritten( -1 );
         }

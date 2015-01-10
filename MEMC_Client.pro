@@ -8,20 +8,24 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    login.cpp \
-    connection.cpp \
-    fileuploader.cpp \
-    mpushbutton.cpp \
-    library.cpp \
-    serviceconnection.cpp \
-    fileservice.cpp
+    ui/library.cpp \
+    ui/login.cpp \
+    ui/mainwindow.cpp \
+    ui/mpushbutton.cpp \
+    core/connection.cpp \
+    core/fileservice.cpp \
+    core/serviceconnection.cpp \
+    ui/fileuploader.cpp \
+    ui/musicmediainfo.cpp \
+    core/uploader.cpp
 
-HEADERS  += mainwindow.h \
-    login.h \
-    connection.h \
-    fileuploader.h \
-    mpushbutton.h \
-    library.h \
-    serviceconnection.h \
-    fileservice.h
+HEADERS  += ui/library.h \
+    ui/login.h \
+    ui/mainwindow.h \
+    ui/mpushbutton.h \
+    core/connection.h \
+    core/fileservice.h \
+    core/serviceconnection.h \
+    ui/fileuploader.h \
+    ui/musicmediainfo.h \
+    core/uploader.h

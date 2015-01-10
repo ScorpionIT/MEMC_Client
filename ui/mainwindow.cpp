@@ -4,6 +4,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    this->setWindowTitle( "MEMC - Client");
     this->resize( 800, 600);
     this->connection = nullptr;
 }
@@ -49,7 +50,7 @@ void MainWindow::newConnection(Connection *conn)
 {
     this->connection = conn;
     this->library = new Library( this->connection );
-    this->fileUploader = new FileUploader();
+    this->fileUploader = new FileUploader( this->connection );
     this->libraryButtonPressed();
     this->show();
 }

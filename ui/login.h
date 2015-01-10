@@ -9,7 +9,7 @@
 #include <QHBoxLayout>
 #include <QEventLoop>
 #include <QMessageBox>
-#include "connection.h"
+#include "core/connection.h"
 
 class Login : public QWidget
 {

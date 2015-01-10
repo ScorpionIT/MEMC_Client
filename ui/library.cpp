@@ -17,11 +17,18 @@ Library::Library(Connection *conn, QWidget *parent) : QWidget(parent)
     this->buttonsLayout->addWidget( this->imageButton );
 
     this->vLayout = new QVBoxLayout();
+    this->hLayout = new QHBoxLayout();
+
     this->vLayout->addLayout( this->buttonsLayout);
 
     this->fileList = new QListWidget();
-    this->vLayout->addWidget( this->fileList );
+    this->fileList->setSelectionMode( QAbstractItemView::SingleSelection );
+    this->fileList->setAlternatingRowColors( true );
 
+    this->hLayout->addWidget( this->fileList );
+    this->hLayout->addWidget( new MusicMediaInfo () );
+
+    this->vLayout->addLayout( this->hLayout );
     this->setLayout(vLayout);
     this->movieButtonPressed();
 }
@@ -36,8 +43,13 @@ void Library::loadFileList(QStringList *fileList, QString response)
     if (response == "end")
     {
         for (int i = 0; i < fileList->size(); i++ )
-            new QListWidgetItem( fileList->at( i ), this->fileList );
-        delete fileList;
+        {
+            QListWidgetItem* item = new QListWidgetItem( fileList->at( i ), this->fileList );
+            QSize tmp = item->sizeHint();
+            tmp.setHeight( 35 );
+            item->setSizeHint( tmp );
+        }
+        this->fileList->setCurrentItem( this->fileList->item( 0 ) );
     }
     delete sender();
 }
@@ -47,10 +59,10 @@ void Library::movieButtonPressed()
     this->movieButton->setEnabled( false );
     this->musicButton->setEnabled( true );
     this->imageButton->setEnabled( true );
-    this->fileList->setStyleSheet("background-image: url("+QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/movie.png); "
+    /*this->fileList->setStyleSheet("background-image: url("+QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/movie.png); "
                                 "background-position: bottom right; "
                                 "background-repeat: no-repeat;"
-                                "background-color: white;");
+                                "background-color: white;");*/
     this->fileList->clear();
     this->fileService = new FileService (FileType::MOVIE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
     connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
@@ -62,10 +74,10 @@ void Library::musicButtonPressed()
     this->movieButton->setEnabled( true );
     this->musicButton->setEnabled( false );
     this->imageButton->setEnabled( true );
-    this->fileList->setStyleSheet("background-image: url("+QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/music.png); "
+    /*this->fileList->setStyleSheet("background-image: url("+QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/music.png); "
                                 "background-position: bottom right; "
                                 "background-repeat: no-repeat;"
-                                "background-color: white;");
+                                "background-color: white;");*/
 
     this->fileList->clear();
     this->fileService = new FileService (FileType::MUSIC, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
@@ -78,10 +90,10 @@ void Library::imageButtonPressed()
     this->movieButton->setEnabled( true );
     this->musicButton->setEnabled( true );
     this->imageButton->setEnabled( false );
-    this->fileList->setStyleSheet("background-image: url("+QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/pictures.png); "
+    /*this->fileList->setStyleSheet("background-image: url("+QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/pictures.png); "
                                 "background-position: bottom right; "
                                 "background-repeat: no-repeat;"
-                                "background-color: white;");
+                                "background-color: white;");*/
 
     this->fileList->clear();
     this->fileService = new FileService (FileType::IMAGE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());

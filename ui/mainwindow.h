@@ -8,8 +8,8 @@
 #include "library.h"
 #include "fileuploader.h"
 
-#include "connection.h"
-#include "fileservice.h"
+#include "core/connection.h"
+#include "core/fileservice.h"
 
 class MainWindow : public QMainWindow
 {

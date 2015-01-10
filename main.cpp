@@ -1,6 +1,6 @@
 #include <QApplication>
-#include "mainwindow.h"
-#include "login.h"
+#include "ui/mainwindow.h"
+#include "ui/login.h"
 
 int main(int argc, char *argv[])
 {
