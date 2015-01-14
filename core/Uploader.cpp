@@ -1,4 +1,6 @@
-#include "uploader.h"
+#include "Uploader.h"
+
+using namespace core;
 
 Uploader::Uploader(QVector<QFileInfo>* toUpload, QString serverAddr, QString serverPort, QString username, QString sessionID)
     : ServiceConnection ( serverAddr, serverPort, username, sessionID )
@@ -19,6 +21,7 @@ void Uploader::stopUpload()
 void Uploader::processService(QTcpSocket *server)
 {
     QString message;
+    QString stopCause;
     int fileNumber = 0;
     bool end = false;
     while ( !end )
@@ -91,8 +94,10 @@ void Uploader::processService(QTcpSocket *server)
                                 QString response = server->readLine();
                                 response.chop( 1 );
                                 if (response != QString::number( chunkCounter ) )
-                                    qDebug() << "chunck lost";
-
+                                {
+                                    this->stopUpload();
+                                    stopCause = "chunk lost";
+                                }
                                 emit progress(100*chunkCounter/chunkNunmber, fileName);
                             }
                         }
@@ -113,7 +118,7 @@ void Uploader::processService(QTcpSocket *server)
                         message = server->readLine();
                         message.chop( 1 );
                         if ( message != "ok" )
-                            qDebug() << "no final confirm";
+                            emit finish( "no final confirm" );
                         fileNumber++;
                     }
                     else
@@ -126,6 +131,6 @@ void Uploader::processService(QTcpSocket *server)
         else
              emit finish( "unknow initial message: " + message );
     }
-    emit finish("");
+    emit finish( stopCause );
     server->close();
 }

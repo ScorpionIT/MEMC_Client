@@ -1,18 +1,15 @@
-#include "fileuploader.h"
+#include "FileUploader.h"
 #include <QDebug>
 
-FileUploader::FileUploader(Connection *conn, QWidget *parent) : QWidget(parent)
+using namespace userInterface;
+
+FileUploader::FileUploader(core::Connection *conn, QWidget *parent) : QWidget(parent)
 {
     this->connection = conn;
     this->selectdFile = new QVector<QFileInfo>;
     this->selectedFileList = new QListWidget();
     this->selectedFileList->setSelectionMode( QAbstractItemView::ExtendedSelection );
     this->selectedFileList->setAlternatingRowColors( true );
-    /*this->selectedFileList->setStyleSheet("background-image: url("+QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/add.png); "
-                                "background-position: center; "
-                                "background-repeat: no-repeat;"
-                                "background-color: white;"
-                                "background-attachment: fixed;");*/
 
     this->buttonLayout = new QHBoxLayout();
     this->cleanButton = new MPushButton( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/clean.png" ), "CLEAN" );
@@ -85,7 +82,7 @@ void FileUploader::uploadButtonPressed()
     this->cleanButton->setEnabled( false );
     this->browseButton->setEnabled( false );
     this->uploadButton->setEnabled( false );
-    uploader = new Uploader (this->selectdFile, "127.0.0.1", "80002", "Elia", this->connection->getSessionID());
+    uploader = new core::Uploader (this->selectdFile, "127.0.0.1", "80002", "Elia", this->connection->getSessionID());
     connect (uploader, SIGNAL( progress( int,QString) ), this, SLOT( uploadProgress(int,QString) ) );
     connect (uploader, SIGNAL( finish( QString ) ), this, SLOT( uploadFinished( QString) ) );
     uploader->start();

@@ -1,4 +1,6 @@
-#include "mpushbutton.h"
+#include "MPushButton.h"
+
+using namespace userInterface;
 
 MPushButton::MPushButton( const QString &text, QWidget *parent) : QPushButton( text, parent )
 {

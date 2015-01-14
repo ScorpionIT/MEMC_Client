@@ -1,5 +1,8 @@
-#include "library.h"
-Library::Library(Connection *conn, QWidget *parent) : QWidget(parent)
+#include "Library.h"
+
+using namespace userInterface;
+
+Library::Library(core::Connection *conn, QWidget *parent) : QWidget(parent)
 {
     this->connection = conn;
     this->buttonsLayout = new QHBoxLayout();
@@ -61,7 +64,7 @@ void Library::movieButtonPressed()
     this->imageButton->setEnabled( true );
 
     this->fileList->clear();
-    this->fileService = new FileService (FileType::MOVIE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
+    this->fileService = new core::FileService (core::FileType::MOVIE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
     connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
     this->fileService->start();
 }
@@ -73,7 +76,7 @@ void Library::musicButtonPressed()
     this->imageButton->setEnabled( true );
 
     this->fileList->clear();
-    this->fileService = new FileService (FileType::MUSIC, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
+    this->fileService = new core::FileService (core::FileType::MUSIC, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
     connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
     this->fileService->start();
 }
@@ -85,7 +88,7 @@ void Library::imageButtonPressed()
     this->imageButton->setEnabled( false );
 
     this->fileList->clear();
-    this->fileService = new FileService (FileType::IMAGE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
+    this->fileService = new core::FileService (core::FileType::IMAGE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
     connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
     this->fileService->start();
 }

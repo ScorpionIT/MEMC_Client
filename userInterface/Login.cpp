@@ -1,4 +1,6 @@
-#include "login.h"
+#include "Login.h"
+
+using namespace userInterface;
 
 Login::Login(QWidget *parent) : QWidget(parent)
 {
@@ -11,7 +13,7 @@ Login::Login(QWidget *parent) : QWidget(parent)
     this->hLayout->addWidget( this->serverAddress );
 
     this->hLayout2 = new QHBoxLayout();
-    this->usernameLabel = new QLabel ( "Nome Utente" );
+    this->usernameLabel = new QLabel ( "Username" );
     this->usernameLabel->setMinimumWidth ( 100 );
     this->username = new QLineEdit ();
     this->hLayout2->addWidget( this->usernameLabel );
@@ -66,17 +68,17 @@ void Login::loginButtonPressed()
     this->loginButton->setEnabled( false );
     this->loginButton->setText( "Connecting..." );
 
-    Connection* connection= new Connection (serverAddress, username, password);
+    core::Connection* connection= new core::Connection (serverAddress, username, password);
 
     if (connection->getLastError().isEmpty())
     {
-        this->loginButton->setText( "Connected" );
         emit loginSuccesful(connection);
         delete this;
     }
     else
     {
         this->loginButton->setEnabled( true );
+        this->loginButton->setText( "Login" );
         QMessageBox::warning(this, "Warning", "Impossibile connettersi: \n"+connection->getLastError());
     }
 }

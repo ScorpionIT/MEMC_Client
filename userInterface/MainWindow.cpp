@@ -1,5 +1,7 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include <QMenu>
+
+using namespace userInterface;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -46,7 +48,7 @@ void MainWindow::configureToolBar()
     this->toolBar->addWidget( this->settingsButton );
 }
 
-void MainWindow::newConnection(Connection *conn)
+void MainWindow::newConnection(core::Connection *conn)
 {
     this->connection = conn;
     this->library = new Library( this->connection );

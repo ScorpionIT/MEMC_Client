@@ -1,5 +1,7 @@
-#include "musicmediainfo.h"
+#include "MusicMediaInfo.h"
 #include <QDebug>
+
+using namespace userInterface;
 
 MusicMediaInfo::MusicMediaInfo()
 {

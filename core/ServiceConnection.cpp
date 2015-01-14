@@ -1,4 +1,6 @@
-#include "serviceconnection.h"
+#include "ServiceConnection.h"
+
+using namespace core;
 
 const unsigned long ServiceConnection::SESSION_TIMER = 10000;
 

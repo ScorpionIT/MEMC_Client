@@ -1,6 +1,8 @@
 #include <QApplication>
-#include "ui/mainwindow.h"
-#include "ui/login.h"
+#include "userInterface/MainWindow.h"
+#include "userInterface/Login.h"
+
+using namespace userInterface;
 
 int main(int argc, char *argv[])
 {
@@ -10,7 +12,7 @@ int main(int argc, char *argv[])
     mainWin.configureToolBar();
 
     Login* login = new Login();
-    QObject::connect (login, SIGNAL( loginSuccesful(Connection*) ), &mainWin, SLOT( newConnection(Connection*) ) );
+    QObject::connect (login, SIGNAL( loginSuccesful(core::Connection*) ), &mainWin, SLOT( newConnection(core::Connection*) ) );
     login->show();
 
     return a.exec();

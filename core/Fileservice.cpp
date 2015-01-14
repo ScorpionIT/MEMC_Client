@@ -1,4 +1,6 @@
-#include "fileservice.h"
+#include "FileService.h"
+
+using namespace core;
 
 FileService::FileService(FileType type, QString serverAddr, QString serverPort, QString username, QString sessionID )
     : ServiceConnection ( serverAddr, serverPort, username, sessionID )
