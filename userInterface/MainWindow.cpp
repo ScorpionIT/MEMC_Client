@@ -9,14 +9,18 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle( "MEMC - Client");
     this->resize( 800, 600);
     this->connection = nullptr;
+    this->library = nullptr;
+    this->fileUploader = nullptr;
 }
 
 MainWindow::~MainWindow()
 {
-    if ( this->connection != nullptr )
+    if( this->connection != nullptr )
         delete this->connection;
-    delete this->library;
-    delete this->fileUploader;
+    if( this->library != nullptr )
+     delete this->library;
+    if( this->fileUploader != nullptr )
+        delete this->fileUploader;
 }
 
 void MainWindow::configureToolBar()

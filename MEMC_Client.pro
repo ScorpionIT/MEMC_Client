@@ -1,11 +1,7 @@
-QT       += core gui network
+QT += core gui widgets network
 CONFIG += c++11
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 TARGET = MEMC_Client
-TEMPLATE = app
-
 
 SOURCES += main.cpp\
     core/Connection.cpp \
