@@ -82,7 +82,7 @@ void FileUploader::uploadProgress(int percent, core::MediaFile* media)
     this->progressBar->setVisible( true );
     this->stopUploadButton->setVisible( true );
     if (percent == 100)
-    this->selectedMediaList->deleteMedia( media );
+        this->selectedMediaList->deleteMedia( media );
 }
 
 void FileUploader::uploadFinished(QString error)

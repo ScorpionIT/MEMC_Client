@@ -42,7 +42,6 @@ void Uploader::processService(QTcpSocket *server)
             }
             else
             {
-                QString mediaName = this->toUpload.at( mediaNumber )->getName();
                 QString mediaType = QString::number( this->toUpload.at( mediaNumber )->getType() );
                 QFileInfo fileInfo( this->toUpload.at( mediaNumber )->getFullPath() );
 
