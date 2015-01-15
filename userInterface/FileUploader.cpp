@@ -3,13 +3,10 @@
 
 using namespace userInterface;
 
-FileUploader::FileUploader(core::Connection *conn, QWidget *parent) : QWidget(parent)
+FileUploader::FileUploader(QWidget *parent) : QWidget(parent)
 {
-    this->connection = conn;
     this->selectdFile = new QVector<QFileInfo>;
-    this->selectedFileList = new QListWidget();
-    this->selectedFileList->setSelectionMode( QAbstractItemView::ExtendedSelection );
-    this->selectedFileList->setAlternatingRowColors( true );
+    this->selectedMediaList = new MediaFileUploadWidgetList();
 
     this->buttonLayout = new QHBoxLayout();
     this->cleanButton = new MPushButton( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/clean.png" ), "CLEAN" );
@@ -27,7 +24,7 @@ FileUploader::FileUploader(core::Connection *conn, QWidget *parent) : QWidget(pa
 
     this->vLayout = new QVBoxLayout();
     this->vLayout->addLayout( this->buttonLayout );
-    this->vLayout->addWidget( this->selectedFileList );
+    this->vLayout->addWidget( this->selectedMediaList );
 
     this->progressLayout = new QHBoxLayout();
     this->progressBar = new QProgressBar();
@@ -49,7 +46,7 @@ FileUploader::~FileUploader()
 void FileUploader::clearButtonPressed()
 {
     this->selectdFile->clear();
-    this->selectedFileList->clear();
+    this->selectedMediaList->clear();
 }
 
 void FileUploader::stopUploadButtonPressed()
@@ -63,17 +60,7 @@ void FileUploader::browseButtonPressed()
     for ( int i = 0; i < chosenFiles.size(); i++ )
     {
         this->selectdFile->append( QFileInfo ( chosenFiles[i] ));
-        QString extension = this->selectdFile->last().suffix();
-
-        QListWidgetItem* item = new QListWidgetItem( this->selectdFile->last().completeBaseName(), this->selectedFileList );
-        QSize tmp = item->sizeHint();
-        tmp.setHeight( 35 );
-        item->setSizeHint( tmp );
-
-        if ( extension == "avi" || extension == "mkv")
-            item->setIcon( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/movie.png" ) );
-        else if ( extension == "mp3" || extension == "wav")
-            item->setIcon( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/music.png" ) );
+        this->selectedMediaList->addMedia( new core::MediaFile (chosenFiles[i]) );
     }
 }
 
@@ -82,23 +69,20 @@ void FileUploader::uploadButtonPressed()
     this->cleanButton->setEnabled( false );
     this->browseButton->setEnabled( false );
     this->uploadButton->setEnabled( false );
-    uploader = new core::Uploader (this->selectdFile, "127.0.0.1", "80002", "Elia", this->connection->getSessionID());
-    connect (uploader, SIGNAL( progress( int,QString) ), this, SLOT( uploadProgress(int,QString) ) );
+    uploader = new core::Uploader ( this->selectedMediaList->getMediaFiles() );
+    connect (uploader, SIGNAL( progress( int, core::MediaFile* ) ), this, SLOT( uploadProgress( int, core::MediaFile* ) ) );
     connect (uploader, SIGNAL( finish( QString ) ), this, SLOT( uploadFinished( QString) ) );
     uploader->start();
 }
 
-void FileUploader::uploadProgress(int percent, QString fileName)
+void FileUploader::uploadProgress(int percent, core::MediaFile* media)
 {
     this->progressBar->setValue( percent );
-    this->progressBar->setFormat( fileName+" (%p%)");
+    this->progressBar->setFormat( media->getName()+" (%p%)");
     this->progressBar->setVisible( true );
     this->stopUploadButton->setVisible( true );
     if (percent == 100)
-    {
-        QListWidgetItem* item = this->selectedFileList->findItems(fileName, Qt::MatchExactly).first();
-        delete  item;
-    }
+    this->selectedMediaList->deleteMedia( media );
 }
 
 void FileUploader::uploadFinished(QString error)

@@ -2,16 +2,17 @@
 
 using namespace core;
 
-FileService::FileService(FileType type, QString serverAddr, QString serverPort, QString username, QString sessionID )
-    : ServiceConnection ( serverAddr, serverPort, username, sessionID )
+FileService::FileService( MediaType type ) : ServiceConnection()
 {
+    Session* session = Session::getSession();
     this->type = type;
-    this->filelist = new QStringList();
+    this->mediaList = new QList<MediaFile*>;
+    this->setPort( session->getFileListPort() );
 }
 
 FileService::~FileService()
 {
-    delete this->filelist;
+    delete this->mediaList;
 }
 
 void FileService::processService(QTcpSocket *server)
@@ -35,12 +36,12 @@ void FileService::processService(QTcpSocket *server)
         }
         else if ( message == "end" )
         {
-            emit this->finish( this->filelist, message );
+            emit this->finish( this->mediaList, message );
             end = true;
         }
         else
         {
-            this->filelist->append( message );
+            this->mediaList->append( new MediaFile ( message, type ) );
         }
     }
 }

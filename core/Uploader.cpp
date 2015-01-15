@@ -2,10 +2,12 @@
 
 using namespace core;
 
-Uploader::Uploader(QVector<QFileInfo>* toUpload, QString serverAddr, QString serverPort, QString username, QString sessionID)
-    : ServiceConnection ( serverAddr, serverPort, username, sessionID )
+Uploader::Uploader(QList<MediaFile *> mediaFiles )
+    : ServiceConnection ( )
 {
-    this->toUpload = toUpload;
+    Session* session = Session::getSession();
+    this->setPort( session->getFileTransfertPort() );
+    this->toUpload = mediaFiles;
     this->stopUploadProcess = false;
 }
 
@@ -22,7 +24,7 @@ void Uploader::processService(QTcpSocket *server)
 {
     QString message;
     QString stopCause;
-    int fileNumber = 0;
+    int mediaNumber = 0;
     bool end = false;
     while ( !end )
     {
@@ -32,7 +34,7 @@ void Uploader::processService(QTcpSocket *server)
 
         if (message == "what do you have for me?[MUSIC=1, VIDEO=2, IMAGES=3, FINISH=4]")
         {
-            if ( fileNumber == this->toUpload->size() || this->stopUploadProcess)
+            if ( mediaNumber == this->toUpload.size() || this->stopUploadProcess)
             {
                 server->write( "4\n" );
                 server->waitForBytesWritten( -1 );
@@ -40,17 +42,12 @@ void Uploader::processService(QTcpSocket *server)
             }
             else
             {
-                QString extension = this->toUpload->at( fileNumber ).suffix();
-                QString fileName = this->toUpload->at( fileNumber ).completeBaseName();
-                QString fileType;
+                QString mediaName = this->toUpload.at( mediaNumber )->getName();
+                QString mediaType = QString::number( this->toUpload.at( mediaNumber )->getType() );
+                QFileInfo fileInfo( this->toUpload.at( mediaNumber )->getFullPath() );
 
-                if ( extension == "avi" || extension == "mkv")
-                    fileType = "2\n";
-                else if ( extension == "mp3" || extension == "wav")
-                    fileType = "1\n";
-
-                emit progress(0, fileName);
-                server->write( fileType.toUtf8() );
+                emit progress(0, this->toUpload.at ( mediaNumber ) );
+                server->write( mediaType.toUtf8() );
                 server->waitForBytesWritten( -1 );
 
                 server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
@@ -59,7 +56,7 @@ void Uploader::processService(QTcpSocket *server)
 
                 if (message == "name?")
                 {
-                    server->write( this->toUpload->at( fileNumber ).fileName().toUtf8()+"\n" );
+                    server->write( this->toUpload.at( mediaNumber )->getFullName().toUtf8()+"\n" );
                     server->waitForBytesWritten( -1 );
 
                     server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
@@ -71,9 +68,9 @@ void Uploader::processService(QTcpSocket *server)
                         server->write( "512" );
                         server->waitForBytesWritten( -1 );
 
-                        QFile file(this->toUpload->at( fileNumber ).filePath() );
+                        QFile file(this->toUpload.at( mediaNumber )->getFullPath() );
                         file.open( QIODevice::ReadOnly );
-                        int fileSize = this->toUpload->at( fileNumber ).size();
+                        int fileSize = fileInfo.size();
                         int chunkNunmber = fileSize / 512 +1;
 
                         int chunkCounter = 0;
@@ -98,7 +95,7 @@ void Uploader::processService(QTcpSocket *server)
                                     this->stopUpload();
                                     stopCause = "chunk lost";
                                 }
-                                emit progress(100*chunkCounter/chunkNunmber, fileName);
+                                emit progress(100*chunkCounter/chunkNunmber, this->toUpload.at ( mediaNumber ));
                             }
                         }
                         file.close();
@@ -119,7 +116,7 @@ void Uploader::processService(QTcpSocket *server)
                         message.chop( 1 );
                         if ( message != "ok" )
                             emit finish( "no final confirm" );
-                        fileNumber++;
+                        mediaNumber++;
                     }
                     else
                         emit finish( "protocol error" );

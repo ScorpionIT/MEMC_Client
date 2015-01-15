@@ -72,7 +72,7 @@ void Login::loginButtonPressed()
 
     if (connection->getLastError().isEmpty())
     {
-        emit loginSuccesful(connection);
+        emit loginSuccesful();
         delete this;
     }
     else

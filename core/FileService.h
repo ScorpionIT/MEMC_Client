@@ -1,28 +1,28 @@
 #ifndef FILESERVICE_H
 #define FILESERVICE_H
 
-#include "ServiceConnection.h"
 #include <QStringList>
+#include "core/ServiceConnection.h"
+#include "core/MediaFile.h"
+#include "core/Session.h"
 
 namespace core
 {
-    enum FileType { MUSIC = 1, MOVIE, IMAGE };
-
     class FileService : public ServiceConnection
     {
         Q_OBJECT
 
     private:
-        FileType type;
-        QStringList* filelist;
+        MediaType type;
+        QList<MediaFile*>* mediaList;
         virtual void processService( QTcpSocket* server );
 
     public:
-        FileService(FileType type, QString serverAddr, QString serverPort, QString username, QString sessionID);
+        FileService(MediaType type);
         ~FileService();
 
     signals:
-        void finish ( QStringList* fileList, QString response );
+        void finish ( QList<core::MediaFile*>*, QString response );
 
     };
 }

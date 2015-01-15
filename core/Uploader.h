@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QVector>
 #include "core/ServiceConnection.h"
+#include "core/MediaFile.h"
 
 namespace core
 {
@@ -12,19 +13,19 @@ namespace core
         Q_OBJECT
 
     private:
-        QVector<QFileInfo>* toUpload;
+        QList<MediaFile*> toUpload;
         bool stopUploadProcess;
 
     protected:
         virtual void processService(QTcpSocket* server);
 
     public:
-        Uploader(QVector<QFileInfo> *selectdFile, QString serverAddr, QString serverPort, QString username, QString sessionID );
+        Uploader(QList<MediaFile*> mediaFiles);
         ~Uploader();
         void stopUpload();
 
     signals:
-        void progress(int percent, QString filename);
+        void progress(int percent, core::MediaFile* mediaFile);
         void finish ( QString status );
 
     };

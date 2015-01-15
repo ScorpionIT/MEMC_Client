@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QTcpSocket>
 #include <QString>
+#include "core/Session.h"
 
 namespace core
 {
@@ -15,17 +16,17 @@ namespace core
         QString lastError;
         QString sessionID;
         QTcpSocket* server;
-        QString serverAddr;
-        QString serverPort;
-        QString username;
+        Session* session;
+        int serverPort;
         void run();
 
     protected:
         static const unsigned long SESSION_TIMER;
+        void setPort (int serverPort );
         virtual void processService(QTcpSocket* server) = 0;
 
     public:
-        ServiceConnection( QString serverAddr, QString serverPort, QString username, QString sessionID);
+        ServiceConnection();
         ~ServiceConnection();
     };
 }

@@ -32,7 +32,7 @@ namespace userInterface
         void configureToolBar();
 
     private slots:
-        void newConnection( core::Connection* conn );
+        void newConnection();
         void libraryButtonPressed();
         void uploadButtonPressed();
         void settingsButtonPressed();

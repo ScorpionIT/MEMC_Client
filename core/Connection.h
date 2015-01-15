@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QTcpSocket>
+#include <core/Session.h>
 
 namespace core
 {
@@ -15,13 +16,11 @@ namespace core
         static const unsigned long SESSION_TIMER;
         QTcpSocket* server;
         QString lastError;
-        QString sessionID;
 
     public:
         Connection(QString serverAddr , QString username, QString password);
         ~Connection();
         QString getLastError();
-        QString getSessionID();
 
     private slots:
         void procesMessage();

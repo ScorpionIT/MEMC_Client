@@ -4,12 +4,10 @@ using namespace core;
 
 const unsigned long ServiceConnection::SESSION_TIMER = 10000;
 
-ServiceConnection::ServiceConnection(QString serverAddr, QString serverPort, QString username, QString sessionID) : QThread ()
+ServiceConnection::ServiceConnection() : QThread ()
 {
-    this->serverAddr = serverAddr;
-    this->serverPort = serverPort;
-    this->username = username;
-    this->sessionID = sessionID;
+    this->session = Session::getSession();
+    this->serverPort = -1;
 }
 
 ServiceConnection::~ServiceConnection()
@@ -19,11 +17,16 @@ ServiceConnection::~ServiceConnection()
     delete this->server;
 }
 
+void ServiceConnection::setPort (int serverPort )
+{
+    this->serverPort = serverPort;
+}
+
 void ServiceConnection::run()
 {
     this->lastError = "";
     this->server = new QTcpSocket();
-    this->server->connectToHost( this->serverAddr, this->serverPort.toInt() );
+    this->server->connectToHost( this->session->getServerAddress(), this->serverPort );
     if ( this->server->waitForConnected( ServiceConnection::SESSION_TIMER ) )
     {
         QString response;
@@ -31,7 +34,7 @@ void ServiceConnection::run()
         response = this->server->readLine();
         response.chop( 1 );
 
-        this->server->write( QString (this->username + " " + this->sessionID + "\n").toUtf8() );
+        this->server->write( QString (this->session->getUsername() + " " + this->session->getID() + "\n").toUtf8() );
         this->server->waitForBytesWritten( -1 );
 
         this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );

@@ -52,11 +52,10 @@ void MainWindow::configureToolBar()
     this->toolBar->addWidget( this->settingsButton );
 }
 
-void MainWindow::newConnection(core::Connection *conn)
+void MainWindow::newConnection()
 {
-    this->connection = conn;
-    this->library = new Library( this->connection );
-    this->fileUploader = new FileUploader( this->connection );
+    this->library = new Library();
+    this->fileUploader = new FileUploader();
     this->libraryButtonPressed();
     this->show();
 }

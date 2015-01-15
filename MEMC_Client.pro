@@ -13,7 +13,11 @@ SOURCES += main.cpp\
     userInterface/Login.cpp \
     userInterface/MainWindow.cpp \
     userInterface/MPushButton.cpp \
-    userInterface/MusicMediaInfo.cpp
+    userInterface/MusicMediaInfo.cpp \
+    core/MediaFile.cpp \
+    userInterface/MediaFileWidgetList.cpp \
+    userInterface/MediaFileUploadWidgetList.cpp \
+    core/Session.cpp
 
 HEADERS  += \
     core/Connection.h \
@@ -25,4 +29,8 @@ HEADERS  += \
     userInterface/Login.h \
     userInterface/MainWindow.h \
     userInterface/MPushButton.h \
-    userInterface/MusicMediaInfo.h
+    userInterface/MusicMediaInfo.h \
+    core/MediaFile.h \
+    userInterface/MediaFileWidgetList.h \
+    userInterface/MediaFileUploadWidgetList.h \
+    core/Session.h

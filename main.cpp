@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     mainWin.configureToolBar();
 
     Login* login = new Login();
-    QObject::connect (login, SIGNAL( loginSuccesful(core::Connection*) ), &mainWin, SLOT( newConnection(core::Connection*) ) );
+    QObject::connect (login, SIGNAL( loginSuccesful() ), &mainWin, SLOT( newConnection() ) );
     login->show();
 
     return a.exec();

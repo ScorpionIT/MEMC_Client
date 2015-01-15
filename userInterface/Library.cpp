@@ -2,9 +2,8 @@
 
 using namespace userInterface;
 
-Library::Library(core::Connection *conn, QWidget *parent) : QWidget(parent)
+Library::Library( QWidget *parent) : QWidget(parent)
 {
-    this->connection = conn;
     this->buttonsLayout = new QHBoxLayout();
     this->movieButton = new MPushButton( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/movie.png" ), "MOVIES" );
     connect ( this->movieButton, SIGNAL( clicked() ), this, SLOT( movieButtonPressed() ) );
@@ -24,11 +23,10 @@ Library::Library(core::Connection *conn, QWidget *parent) : QWidget(parent)
 
     this->vLayout->addLayout( this->buttonsLayout);
 
-    this->fileList = new QListWidget();
-    this->fileList->setSelectionMode( QAbstractItemView::SingleSelection );
-    this->fileList->setAlternatingRowColors( true );
+    this->mediaList = new MediaFileWidgetList();
 
-    this->hLayout->addWidget( this->fileList );
+
+    this->hLayout->addWidget( this->mediaList );
     this->hLayout->addWidget( new MusicMediaInfo () );
 
     this->vLayout->addLayout( this->hLayout );
@@ -41,18 +39,13 @@ Library::~Library()
 
 }
 
-void Library::loadFileList(QStringList *fileList, QString response)
+void Library::loadFileList(QList<core::MediaFile*> *mediaList, QString response)
 {
     if (response == "end")
     {
-        for (int i = 0; i < fileList->size(); i++ )
-        {
-            QListWidgetItem* item = new QListWidgetItem( fileList->at( i ), this->fileList );
-            QSize tmp = item->sizeHint();
-            tmp.setHeight( 35 );
-            item->setSizeHint( tmp );
-        }
-        this->fileList->setCurrentItem( this->fileList->item( 0 ) );
+        for ( QList<core::MediaFile*>::iterator i = mediaList->begin() ; i != mediaList->end(); i++ )
+            this->mediaList->addMedia( (*i) );
+        this->mediaList->setCurrentItem( this->mediaList->item( 0 ) );
     }
     delete sender();
 }
@@ -63,9 +56,9 @@ void Library::movieButtonPressed()
     this->musicButton->setEnabled( true );
     this->imageButton->setEnabled( true );
 
-    this->fileList->clear();
-    this->fileService = new core::FileService (core::FileType::MOVIE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
-    connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
+    this->mediaList->clear();
+    this->fileService = new core::FileService ( core::MediaType::MOVIE );
+    connect( this->fileService, SIGNAL( finish( QList<core::MediaFile*>*,QString ) ), this, SLOT( loadFileList( QList<core::MediaFile*>*,QString ) ) );
     this->fileService->start();
 }
 
@@ -75,9 +68,9 @@ void Library::musicButtonPressed()
     this->musicButton->setEnabled( false );
     this->imageButton->setEnabled( true );
 
-    this->fileList->clear();
-    this->fileService = new core::FileService (core::FileType::MUSIC, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
-    connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
+    this->mediaList->clear();
+    this->fileService = new core::FileService ( core::MediaType::MUSIC );
+    connect( this->fileService, SIGNAL( finish( QList<core::MediaFile*>*,QString ) ), this, SLOT( loadFileList( QList<core::MediaFile*>*,QString ) ) );
     this->fileService->start();
 }
 
@@ -87,9 +80,9 @@ void Library::imageButtonPressed()
     this->musicButton->setEnabled( true );
     this->imageButton->setEnabled( false );
 
-    this->fileList->clear();
-    this->fileService = new core::FileService (core::FileType::IMAGE, "127.0.0.1", "80001", "Elia", this->connection->getSessionID());
-    connect( this->fileService, SIGNAL( finish(QStringList*,QString) ), this, SLOT( loadFileList(QStringList*,QString) ) );
+    this->mediaList->clear();
+    this->fileService = new core::FileService ( core::MediaType::IMAGE );
+    connect( this->fileService, SIGNAL( finish( QList<core::MediaFile*>*,QString ) ), this, SLOT( loadFileList( QList<core::MediaFile*>*,QString ) ) );
     this->fileService->start();
 }
 

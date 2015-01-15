@@ -36,7 +36,7 @@ namespace userInterface
         ~Login();
 
     signals:
-        void loginSuccesful(core::Connection* conn);
+        void loginSuccesful();
 
     private slots:
         void loginButtonPressed();

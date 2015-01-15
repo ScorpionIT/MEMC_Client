@@ -7,9 +7,10 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include "MPushButton.h"
-#include "core/Connection.h"
-#include "core/FileService.h"
+#include <userInterface/MediaFileWidgetList.h>
 #include <userInterface/MusicMediaInfo.h>
+#include "core/FileService.h"
+#include "core/MediaFile.h"
 
 namespace userInterface
 {
@@ -21,21 +22,20 @@ namespace userInterface
         MPushButton* movieButton;
         MPushButton* musicButton;
         MPushButton* imageButton;
-        QListWidget* fileList;
+        MediaFileWidgetList* mediaList;
         QHBoxLayout* buttonsLayout;
         QHBoxLayout* hLayout;
         QVBoxLayout* vLayout;
         core::FileService* fileService;
-        core::Connection* connection;
 
     public:
-        Library(core::Connection* conn, QWidget *parent = 0);
+        Library(QWidget *parent = 0);
         ~Library();
 
     signals:
 
     private slots:
-        void loadFileList( QStringList* fileList, QString response );
+        void loadFileList(QList<core::MediaFile*>* mediaList, QString response);
         void movieButtonPressed();
         void musicButtonPressed();
         void imageButtonPressed();

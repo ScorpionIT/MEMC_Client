@@ -5,15 +5,16 @@
 #include <QVector>
 #include <QDir>
 #include <QFileInfo>
-#include <QListWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QProgressBar>
 #include "userInterface/MPushButton.h"
+#include "userInterface/MediaFileWidgetList.h"
+#include "userInterface/MediaFileUploadWidgetList.h"
 #include "core/Uploader.h"
-#include "core/Connection.h"
+#include "core/Session.h"
 
 namespace userInterface
 {
@@ -22,7 +23,7 @@ namespace userInterface
         Q_OBJECT
 
     private:
-        QListWidget* selectedFileList;
+        MediaFileWidgetList* selectedMediaList;
         QProgressBar* progressBar;
         MPushButton* cleanButton;
         MPushButton* browseButton;
@@ -33,10 +34,9 @@ namespace userInterface
         QVBoxLayout* vLayout;
         core::Uploader* uploader;
         QVector<QFileInfo>* selectdFile;
-        core::Connection* connection;
 
     public:
-        explicit FileUploader(core::Connection* conn, QWidget *parent = 0);
+        explicit FileUploader( QWidget *parent = 0);
         ~FileUploader();
 
     signals:
@@ -46,7 +46,7 @@ namespace userInterface
         void stopUploadButtonPressed();
         void browseButtonPressed();
         void uploadButtonPressed();
-        void uploadProgress( int percent, QString fileName );
+        void uploadProgress( int percent, core::MediaFile* media );
         void uploadFinished( QString error );
     };
 }
