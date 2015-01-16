@@ -6,10 +6,8 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QMap>
-#include <QDir>
 #include "userInterface/MediaFileWidgetList.h"
-
-#include "core/MediaFile.h"
+#include "core/media/MediaFile.h"
 
 namespace userInterface
 {
@@ -17,7 +15,7 @@ namespace userInterface
     {
 
     private:
-        virtual QListWidgetItem *MediaFileWidgetListItem( core::MediaFile *file );
+        virtual QListWidgetItem *MediaFileWidgetListItem( core::media::MediaFile *file );
 
     public:
         MediaFileUploadWidgetList( QWidget* parent = nullptr );

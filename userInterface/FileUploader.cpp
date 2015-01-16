@@ -9,13 +9,13 @@ FileUploader::FileUploader(QWidget *parent) : QWidget(parent)
     this->selectedMediaList = new MediaFileUploadWidgetList();
 
     this->buttonLayout = new QHBoxLayout();
-    this->cleanButton = new MPushButton( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/clean.png" ), "CLEAN" );
+    this->cleanButton = new MPushButton( IconLoader::getIstance()->getIcon(IconLoader::CLEAN), "CLEAN" );
     connect( this->cleanButton, SIGNAL( clicked() ), this, SLOT( clearButtonPressed() ) );
 
-    this->browseButton = new MPushButton( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/filemanager.png" ), "BROWSE" );
+    this->browseButton = new MPushButton( IconLoader::getIstance()->getIcon(IconLoader::BROWSE), "BROWSE" );
     connect( this->browseButton, SIGNAL( clicked() ), this, SLOT( browseButtonPressed() ) );
 
-    this->uploadButton = new MPushButton( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/add.png" ), "UPLOAD" );
+    this->uploadButton = new MPushButton( IconLoader::getIstance()->getIcon(IconLoader::UPLOAD), "UPLOAD" );
     connect( this->uploadButton, SIGNAL( clicked() ), this, SLOT( uploadButtonPressed() ) );
 
     this->buttonLayout->addWidget( this->cleanButton );
@@ -30,7 +30,7 @@ FileUploader::FileUploader(QWidget *parent) : QWidget(parent)
     this->progressBar = new QProgressBar();
     this->progressBar->setVisible( false );
     this->progressLayout->addWidget( this->progressBar );
-    this->stopUploadButton = new QPushButton( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/deleteicon.png" ), "STOP" );
+    this->stopUploadButton = new QPushButton( IconLoader::getIstance()->getIcon(IconLoader::DEL), "STOP" );
     this->stopUploadButton->setVisible( false );
     connect( this->stopUploadButton, SIGNAL( clicked() ), this, SLOT( stopUploadButtonPressed()) );
     this->progressLayout->addWidget( this->stopUploadButton );
@@ -60,22 +60,25 @@ void FileUploader::browseButtonPressed()
     for ( int i = 0; i < chosenFiles.size(); i++ )
     {
         this->selectdFile->append( QFileInfo ( chosenFiles[i] ));
-        this->selectedMediaList->addMedia( new core::MediaFile (chosenFiles[i]) );
+        this->selectedMediaList->addMedia( new core::media::MediaFile (chosenFiles[i]) );
     }
 }
 
 void FileUploader::uploadButtonPressed()
 {
-    this->cleanButton->setEnabled( false );
-    this->browseButton->setEnabled( false );
-    this->uploadButton->setEnabled( false );
-    uploader = new core::Uploader ( this->selectedMediaList->getMediaFiles() );
-    connect (uploader, SIGNAL( progress( int, core::MediaFile* ) ), this, SLOT( uploadProgress( int, core::MediaFile* ) ) );
-    connect (uploader, SIGNAL( finish( QString ) ), this, SLOT( uploadFinished( QString) ) );
-    uploader->start();
+    if (this->selectedMediaList->count() > 0)
+    {
+        this->cleanButton->setEnabled( false );
+        this->browseButton->setEnabled( false );
+        this->uploadButton->setEnabled( false );
+        uploader = new core::service::UploaderService ( this->selectedMediaList->getMediaFiles() );
+        connect (uploader, SIGNAL( progress( int, core::media::MediaFile* ) ), this, SLOT( uploadProgress( int, core::media::MediaFile* ) ) );
+        connect (uploader, SIGNAL( finish( QString ) ), this, SLOT( uploadFinished( QString) ) );
+        uploader->start();
+    }
 }
 
-void FileUploader::uploadProgress(int percent, core::MediaFile* media)
+void FileUploader::uploadProgress(int percent, core::media::MediaFile* media)
 {
     this->progressBar->setValue( percent );
     this->progressBar->setFormat( media->getName()+" (%p%)");

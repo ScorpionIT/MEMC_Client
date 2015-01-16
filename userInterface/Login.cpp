@@ -42,7 +42,7 @@ Login::Login(QWidget *parent) : QWidget(parent)
     this->username->setText( "Elia" );
     this->password->setText( "elia" );
     // DEBUG FAST LOGIN
-
+    this->setFocus();
 }
 
 Login::~Login()
@@ -68,7 +68,7 @@ void Login::loginButtonPressed()
     this->loginButton->setEnabled( false );
     this->loginButton->setText( "Connecting..." );
 
-    core::Connection* connection= new core::Connection (serverAddress, username, password);
+    core::network::Connection* connection= new core::network::Connection (serverAddress, username, password);
 
     if (connection->getLastError().isEmpty())
     {

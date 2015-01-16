@@ -1,18 +1,18 @@
-#include "MPushButton.h"
+#include "MToolPushButton.h"
 
 using namespace userInterface;
 
-MPushButton::MPushButton( const QString &text, QWidget *parent) : QPushButton( text, parent )
+MToolPushButton::MToolPushButton( const QString &text, QWidget *parent) : QPushButton( text, parent )
 {
     this->setMemcStyle();
 }
 
-MPushButton::MPushButton(const QIcon &icon, const QString &text, QWidget *parent) : QPushButton( icon, text, parent )
+MToolPushButton::MToolPushButton(const QIcon &icon, const QString &text, QWidget *parent) : QPushButton( icon, text, parent )
 {
     this->setMemcStyle();
 }
 
-void MPushButton::setMemcStyle()
+void MToolPushButton::setMemcStyle()
 {
     QFont buttonFont;
     buttonFont.setPointSize( 10 );
@@ -21,7 +21,11 @@ void MPushButton::setMemcStyle()
     this->setIconSize( buttonIconSize );
     this->setFont( buttonFont );
     QString  style = "QPushButton {"
-            "padding: 3;"
+            "background-color: transparent;"
+            "border: none;"
+            "color: white;"
+            "padding: 5;"
+            "border-radius: 3"
             "}"
             "QPushButton:hover {"
             "background-color: #89BEE8;"

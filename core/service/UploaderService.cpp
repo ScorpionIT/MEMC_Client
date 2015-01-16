@@ -1,26 +1,27 @@
-#include "Uploader.h"
+#include "UploaderService.h"
 
 using namespace core;
+using namespace service;
 
-Uploader::Uploader(QList<MediaFile *> mediaFiles )
+UploaderService::UploaderService(QList<media::MediaFile *> mediaFiles )
     : ServiceConnection ( )
 {
-    Session* session = Session::getSession();
-    this->setPort( session->getFileTransfertPort() );
+    network::Session* session = network::Session::getSession();
+    this->setPort( session->getFileTransferPort() );
     this->toUpload = mediaFiles;
     this->stopUploadProcess = false;
 }
 
-Uploader::~Uploader()
+UploaderService::~UploaderService()
 {
 }
 
-void Uploader::stopUpload()
+void UploaderService::stopUpload()
 {
     this->stopUploadProcess = true;
 }
 
-void Uploader::processService(QTcpSocket *server)
+void UploaderService::processService(QTcpSocket *server)
 {
     QString message;
     QString stopCause;

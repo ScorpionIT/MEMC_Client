@@ -1,12 +1,13 @@
 #include "ServiceConnection.h"
 
 using namespace core;
+using namespace service;
 
 const unsigned long ServiceConnection::SESSION_TIMER = 10000;
 
 ServiceConnection::ServiceConnection() : QThread ()
 {
-    this->session = Session::getSession();
+    this->session = network::Session::getSession();
     this->serverPort = -1;
 }
 

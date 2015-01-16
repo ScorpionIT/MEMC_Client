@@ -6,8 +6,9 @@
 #include <QLabel>
 #include <QIcon>
 #include <QMap>
+#include "userInterface/IconLoader.h"
 
-#include "core/MediaFile.h"
+#include "core/media/MediaFile.h"
 
 namespace userInterface
 {
@@ -15,19 +16,19 @@ namespace userInterface
     {
 
     private:
-        QMap<QListWidgetItem*, core::MediaFile*>* index;
+        QMap<QListWidgetItem*, core::media::MediaFile*>* index;
 
     protected:
-        virtual QListWidgetItem *MediaFileWidgetListItem(core::MediaFile *file );
+        virtual QListWidgetItem *MediaFileWidgetListItem(core::media::MediaFile *file );
 
     public:
         MediaFileWidgetList( QWidget* parent = nullptr );
         ~MediaFileWidgetList();
 
-        void addMedia (core::MediaFile* file );
-        void deleteMedia (core::MediaFile* file );
-
-        QList<core::MediaFile *> getMediaFiles();
+        void addMedia (core::media::MediaFile* mediaFile );
+        void deleteMedia (core::media::MediaFile* file );
+        QList<core::media::MediaFile *> selectedMedia();
+        QList<core::media::MediaFile *> getMediaFiles();
         void clear();
     };
 }

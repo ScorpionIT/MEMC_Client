@@ -1,21 +1,22 @@
-#include "FileService.h"
+#include "FileListService.h"
 
 using namespace core;
+using namespace service;
 
-FileService::FileService( MediaType type ) : ServiceConnection()
+FileListService::FileListService( media::MediaType type ) : ServiceConnection()
 {
-    Session* session = Session::getSession();
+    network::Session* session = network::Session::getSession();
     this->type = type;
-    this->mediaList = new QList<MediaFile*>;
+    this->mediaList = new QList<media::MediaFile*>;
     this->setPort( session->getFileListPort() );
 }
 
-FileService::~FileService()
+FileListService::~FileListService()
 {
     delete this->mediaList;
 }
 
-void FileService::processService(QTcpSocket *server)
+void FileListService::processService(QTcpSocket *server)
 {
     QString message;
     bool end = false;
@@ -24,7 +25,11 @@ void FileService::processService(QTcpSocket *server)
         server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         message = server->readLine();
         message.chop( 1 );
-        if (message == "? [MUSIC=1, VIDEOS=2, IMAGES=3]")
+        if ( message.isEmpty() )
+        {
+            end = true;
+        }
+        else if (message == "? [MUSIC=1, VIDEOS=2, IMAGES=3]")
         {
             server->write( QString ( QString::number( type ) + "\n" ).toUtf8() );
             server->waitForBytesWritten( -1 );
@@ -41,7 +46,7 @@ void FileService::processService(QTcpSocket *server)
         }
         else
         {
-            this->mediaList->append( new MediaFile ( message, type ) );
+            this->mediaList->append( new media::MediaFile ( message, type ) );
         }
     }
 }

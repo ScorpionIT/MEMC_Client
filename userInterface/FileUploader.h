@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QVector>
-#include <QDir>
 #include <QFileInfo>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -13,8 +12,9 @@
 #include "userInterface/MPushButton.h"
 #include "userInterface/MediaFileWidgetList.h"
 #include "userInterface/MediaFileUploadWidgetList.h"
-#include "core/Uploader.h"
-#include "core/Session.h"
+#include "userInterface/IconLoader.h"
+#include "core/service/UploaderService.h"
+#include "core/network/Session.h"
 
 namespace userInterface
 {
@@ -32,11 +32,11 @@ namespace userInterface
         QHBoxLayout* buttonLayout;
         QHBoxLayout* progressLayout;
         QVBoxLayout* vLayout;
-        core::Uploader* uploader;
+        core::service::UploaderService* uploader;
         QVector<QFileInfo>* selectdFile;
 
     public:
-        explicit FileUploader( QWidget *parent = 0);
+        FileUploader( QWidget *parent = 0);
         ~FileUploader();
 
     signals:
@@ -46,7 +46,7 @@ namespace userInterface
         void stopUploadButtonPressed();
         void browseButtonPressed();
         void uploadButtonPressed();
-        void uploadProgress( int percent, core::MediaFile* media );
+        void uploadProgress( int percent, core::media::MediaFile* media );
         void uploadFinished( QString error );
     };
 }

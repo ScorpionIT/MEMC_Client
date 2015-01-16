@@ -2,15 +2,18 @@
 #define FILEMANAGER_H
 
 #include <QWidget>
-#include <QDir>
+#include <QMessageBox>
 #include <QListWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include "MPushButton.h"
 #include <userInterface/MediaFileWidgetList.h>
 #include <userInterface/MusicMediaInfo.h>
-#include "core/FileService.h"
-#include "core/MediaFile.h"
+#include <userInterface/MediaInfoView.h>
+#include <userInterface/IconLoader.h>
+#include "core/media/MediaFile.h"
+#include "core/service/FileListService.h"
+#include "core/service/FileManagerService.h"
 
 namespace userInterface
 {
@@ -22,11 +25,19 @@ namespace userInterface
         MPushButton* movieButton;
         MPushButton* musicButton;
         MPushButton* imageButton;
+        MPushButton* deleteMediaButton;
+        MPushButton* toPublicButton;
+        MPushButton* toPrivateButton;
         MediaFileWidgetList* mediaList;
         QHBoxLayout* buttonsLayout;
-        QHBoxLayout* hLayout;
+        QHBoxLayout* mediaButtonLayout;
+        QHBoxLayout* mediaHLayout;
+        QVBoxLayout* mediaVLayout;
         QVBoxLayout* vLayout;
-        core::FileService* fileService;
+        MediaInfoView* mediaInfo;
+        core::media::MediaType currentMediaSection;
+        void setMediaInfoWidget (MediaInfoView* mediaInfoView);
+        void loadMediaList ();
 
     public:
         Library(QWidget *parent = 0);
@@ -35,10 +46,15 @@ namespace userInterface
     signals:
 
     private slots:
-        void loadFileList(QList<core::MediaFile*>* mediaList, QString response);
+        void addFileList(QList<core::media::MediaFile*>* mediaList, QString response);
         void movieButtonPressed();
         void musicButtonPressed();
         void imageButtonPressed();
+        void deleteMediaPressed();
+        void toPrivatePressed();
+        void toPublicPressed();
+        void mediaSelected();
+        void mediaDeleted( QString response );
     };
 }
 

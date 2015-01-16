@@ -1,6 +1,7 @@
 #include "Connection.h"
 
 using namespace core;
+using namespace network;
 
 const unsigned long Connection::SESSION_TIMER = 10000;
 
@@ -48,7 +49,7 @@ Connection::Connection(QString serverAddr, QString username, QString password)
                     // TO DO
                     Session* session = Session::getSession();
                     session->setSession(serverAddr, username, sessionID);
-                    session->setServicePort(80002, 0, 80001, 0);
+                    session->setServicePort(80002, 80001, 80008, 0);
                     // TO DO
 
                     connect ( this->server, SIGNAL( readyRead() ), this, SLOT ( procesMessage() ) );

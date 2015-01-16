@@ -3,13 +3,11 @@
 
 #include <QMainWindow>
 #include <QToolBar>
-#include "Login.h"
-#include "MPushButton.h"
-#include "Library.h"
-#include "FileUploader.h"
-
-#include "core/Connection.h"
-#include "core/FileService.h"
+#include "userInterface/Login.h"
+#include "userInterface/Library.h"
+#include "userInterface/FileUploader.h"
+#include "userInterface/MToolPushButton.h"
+#include "userInterface/IconLoader.h"
 
 namespace userInterface
 {
@@ -19,15 +17,14 @@ namespace userInterface
 
     private:
         QToolBar* toolBar;
-        MPushButton* libraryButton;
-        MPushButton* uploadButton;
-        MPushButton* settingsButton;
+        MToolPushButton* libraryButton;
+        MToolPushButton* uploadButton;
+        MToolPushButton* settingsButton;
         Library* library;
         FileUploader* fileUploader;
 
     public:
         MainWindow(QWidget *parent = 0);
-        core::Connection* connection;
         ~MainWindow();
         void configureToolBar();
 

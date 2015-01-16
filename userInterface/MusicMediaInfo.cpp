@@ -7,10 +7,10 @@ MusicMediaInfo::MusicMediaInfo()
 {
     this->fileName = nullptr;
     this->mediaLogo = new QLabel ();
-    this->mediaLogo->setPixmap ( QPixmap ( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/music.png" ) );
+    this->mediaLogo->setPixmap ( IconLoader::getIstance()->getIcon( IconLoader::MUSIC ) );
     this->mediaLogo->resize (128, 98);
 
-    this->deleteMediaButton = new MPushButton( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/clean.png" ), "Delete media" );
+    this->playMediaButton = new MPushButton( IconLoader::getIstance()->getIcon( IconLoader::MUSIC ), "Play Media" );
     //connect (this->deleteMediaButton, SIGNAL( clicked() ), this, SLOT( deleteMediaButtonPressed() ) );
 
     this->vLayout = new QVBoxLayout();
@@ -25,12 +25,20 @@ MusicMediaInfo::MusicMediaInfo()
     vLayout->addWidget ( label );
     label = new QLabel ( "<b>Duration:</b> " );
     vLayout->addWidget ( label );
+
+
+
     vLayout->addSpacing( 50 );
-    vLayout->addWidget( this->deleteMediaButton );
+    vLayout->addWidget( this->playMediaButton );
     this->setLayout( vLayout );
 }
 
 MusicMediaInfo::~MusicMediaInfo()
+{
+
+}
+
+void MusicMediaInfo::setMedia()
 {
 
 }

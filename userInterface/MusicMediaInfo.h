@@ -1,30 +1,32 @@
 #ifndef MUSICMEDIAINFO_H
 #define MUSICMEDIAINFO_H
 
-#include <QDir>
 #include <QWidget>
 #include <QLabel>
 #include <QString>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <userInterface/MPushButton.h>
+#include <userInterface/MediaInfoView.h>
+#include <userInterface/IconLoader.h>
 
 namespace userInterface
 {
-    class MusicMediaInfo : public QWidget
+    class MusicMediaInfo : public MediaInfoView
     {
         Q_OBJECT
 
     private:
         QString* fileName;
         QLabel* mediaLogo;
-        MPushButton* deleteMediaButton;
+        MPushButton* playMediaButton;
         QHBoxLayout* hLayout;
         QVBoxLayout* vLayout;
 
     public:
         MusicMediaInfo();
         ~MusicMediaInfo();
+        void setMedia();
     };
 }
 

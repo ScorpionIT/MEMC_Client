@@ -1,6 +1,7 @@
 #include "Session.h"
 
 using namespace core;
+using namespace network;
 
 Session* Session::currentSession = nullptr;
 
@@ -21,15 +22,15 @@ void Session::setSession(QString serverAddress, QString username, QString sessio
     this->sessionID = sessionID;
 }
 
-void Session::setServicePort(int fileTransferPort, int fileManagerPort, int fileListPort, int DlnaManagerPort)
+void Session::setServicePort(int fileTransfertPort, int fileListPort, int fileManagerPort, int DlnaManagerPort)
 {
-    this->fileTransferPort = fileTransferPort;
-    this->fileManagerPort = fileManagerPort;
+    this->fileTransferPort = fileTransfertPort;
     this->fileListPort = fileListPort;
+    this->fileManagerPort = fileManagerPort;
     this->DlnaManagerPort = DlnaManagerPort;
 }
 
-Session *core::Session::getSession()
+Session *Session::getSession()
 {
     if ( currentSession == nullptr )
         currentSession = new Session();
@@ -52,19 +53,19 @@ QString Session::getID()
     return this->sessionID;
 }
 
-int Session::getFileTransfertPort()
+int Session::getFileTransferPort()
 {
     return this->fileTransferPort;
-}
-
-int Session::getManagerTransfertPort()
-{
-    return this->fileManagerPort;
 }
 
 int Session::getFileListPort()
 {
     return this->fileListPort;
+}
+
+int Session::getFileManagerPort()
+{
+    return this->fileManagerPort;
 }
 
 int Session::getDlnaManagerPort()

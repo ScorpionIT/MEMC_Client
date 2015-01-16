@@ -8,7 +8,7 @@ MediaFileUploadWidgetList::MediaFileUploadWidgetList(QWidget *parent ) : MediaFi
     this->setSelectionMode( QAbstractItemView::NoSelection);
 }
 
-QListWidgetItem *MediaFileUploadWidgetList::MediaFileWidgetListItem( core::MediaFile* file )
+QListWidgetItem *MediaFileUploadWidgetList::MediaFileWidgetListItem( core::media::MediaFile* file )
 {
     QListWidgetItem* item = new QListWidgetItem( "", this );
     QSize tmp = item->sizeHint();
@@ -24,12 +24,12 @@ QListWidgetItem *MediaFileUploadWidgetList::MediaFileWidgetListItem( core::Media
     mediaName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mediaName->setAlignment( Qt::AlignLeft | Qt::AlignVCenter );
 
-    if ( file->getType() == core::MediaType::MOVIE )
-        typeIcon = QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/movie.png" );
-    else if ( file->getType() == core::MediaType::MUSIC )
-       typeIcon = ( QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/music.png" ) );
-    else if ( file->getType() == core::MediaType::IMAGE )
-       typeIcon = QPixmap( QDir::homePath()+"/Dropbox/Progetto Condiviso/Incigneria/Client/image/pictures.png" );
+    if ( file->getType() == core::media::MediaType::MOVIE )
+        typeIcon = IconLoader::getIstance()->getIcon(IconLoader::MOVIE);
+    else if ( file->getType() == core::media::MediaType::MUSIC )
+       typeIcon = IconLoader::getIstance()->getIcon(IconLoader::MUSIC);
+    else if ( file->getType() == core::media::MediaType::IMAGE )
+       typeIcon = IconLoader::getIstance()->getIcon(IconLoader::IMAGE);
 
     typeIcon = typeIcon.scaledToHeight( 35 );
     fileTypeIcon->setPixmap( typeIcon );

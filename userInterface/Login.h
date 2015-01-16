@@ -10,7 +10,7 @@
 #include <QHBoxLayout>
 #include <QEventLoop>
 #include <QMessageBox>
-#include "core/Connection.h"
+#include "core/network/Connection.h"
 
 namespace userInterface
 {
