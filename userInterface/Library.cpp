@@ -144,7 +144,7 @@ void Library::deleteMediaPressed()
         if (ret == QMessageBox::Yes)
         {
             core::service::FileManagerService* fileManagerService = new core::service::FileManagerService (selectedMedia, core::service::Operation::DELETE);
-            connect (fileManagerService, SIGNAL( finish( QString ) ), this, SLOT( mediaDeleted( QString ) ) );
+            connect (fileManagerService, SIGNAL( finish( QString ) ), this, SLOT( serviceResponse( QString ) ) );
             fileManagerService->start();
         }
     }
@@ -153,10 +153,11 @@ void Library::deleteMediaPressed()
 void Library::toPrivatePressed()
 {
     QList<core::media::MediaFile*> selectedMedia = this->mediaList->selectedMedia();
-     qDebug() << selectedMedia.count();
     if ( selectedMedia.count() == 1 )
     {
-        qDebug() << "Locca  " + selectedMedia.first()->getName();
+        core::service::FileManagerService* fileManagerService = new core::service::FileManagerService (selectedMedia, core::service::Operation::LOCK);
+        connect (fileManagerService, SIGNAL( finish( QString ) ), this, SLOT( serviceResponse( QString ) ) );
+        fileManagerService->start();
     }
     else
     {
@@ -173,7 +174,9 @@ void Library::toPrivatePressed()
                                            QMessageBox::Yes | QMessageBox::No);
             if (ret == QMessageBox::Yes)
             {
-                qDebug() << "Locca  " + toLock;
+                core::service::FileManagerService* fileManagerService = new core::service::FileManagerService (selectedMedia, core::service::Operation::LOCK);
+                connect (fileManagerService, SIGNAL( finish( QString ) ), this, SLOT( serviceResponse( QString ) ) );
+                fileManagerService->start();
             }
         }
     }
@@ -182,10 +185,11 @@ void Library::toPrivatePressed()
 void Library::toPublicPressed()
 {
     QList<core::media::MediaFile*> selectedMedia = this->mediaList->selectedMedia();
-     qDebug() << selectedMedia.count();
     if ( selectedMedia.count() == 1 )
     {
-        qDebug() << "Anlocca  " + selectedMedia.first()->getName();
+        core::service::FileManagerService* fileManagerService = new core::service::FileManagerService (selectedMedia, core::service::Operation::UNLOCK);
+        connect (fileManagerService, SIGNAL( finish( QString ) ), this, SLOT( serviceResponse( QString ) ) );
+        fileManagerService->start();
     }
     else
     {
@@ -202,7 +206,9 @@ void Library::toPublicPressed()
                                            QMessageBox::Yes | QMessageBox::No);
             if (ret == QMessageBox::Yes)
             {
-                qDebug() << "Anlocca  " + toLock;
+                core::service::FileManagerService* fileManagerService = new core::service::FileManagerService (selectedMedia, core::service::Operation::UNLOCK);
+                connect (fileManagerService, SIGNAL( finish( QString ) ), this, SLOT( serviceResponse( QString ) ) );
+                fileManagerService->start();
             }
         }
     }
@@ -234,7 +240,7 @@ void Library::mediaSelected()
     }
 }
 
-void Library::mediaDeleted(QString response)
+void Library::serviceResponse(QString response)
 {
     if (response == "Done")
         this->loadMediaList();

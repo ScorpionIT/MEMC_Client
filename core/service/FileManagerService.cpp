@@ -1,4 +1,5 @@
 #include "FileManagerService.h"
+#include <QDebug>
 
 using namespace core;
 using namespace service;
@@ -40,7 +41,12 @@ void FileManagerService::processService(QTcpSocket *server)
             server->write( "END\n" );
             server->waitForBytesWritten( -1 );
         }
-        else if (message == "what do I have to do?[DELETE_FILE=1, CHANGE_SCOPE=2, FINISH=3]")
+        else if (message == "[MUSIC=1, VIDEO=2, IMAGE=3]")
+        {
+            server->write( QString ( QString::number( this->mediaList.first()->getType() ) + "\n" ).toUtf8() );
+            server->waitForBytesWritten( -1 );
+        }
+        else if (message == "what do I have to do?[DELETE_FILE=1, LOCK_FILE=2, UNLOCK_FILE=3, FINISH=4]")
         {
             server->write( QString ( QString::number( this->operation ) + "\n" ).toUtf8() );
             server->waitForBytesWritten( -1 );
@@ -53,7 +59,11 @@ void FileManagerService::processService(QTcpSocket *server)
         else if ( message == "Done" )
         {
             emit this->finish( message );
-            server->write( "3\n" );
+            if (this->operation == Operation::DELETE)
+                server->write( "3\n" );
+            else
+                server->write( "4\n" );
+
             server->waitForBytesWritten( -1 );
             end = true;
         }

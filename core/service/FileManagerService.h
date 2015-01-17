@@ -8,7 +8,7 @@ namespace core
 {
     namespace service
     {
-        enum Operation {DELETE = 1, CHAGE_SCOPE };
+        enum Operation {DELETE = 1, LOCK, UNLOCK };
 
         class FileManagerService : public ServiceConnection
         {

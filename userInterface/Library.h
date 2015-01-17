@@ -54,7 +54,7 @@ namespace userInterface
         void toPrivatePressed();
         void toPublicPressed();
         void mediaSelected();
-        void mediaDeleted( QString response );
+        void serviceResponse( QString response );
     };
 }
 

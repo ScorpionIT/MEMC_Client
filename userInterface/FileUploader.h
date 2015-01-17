@@ -31,7 +31,7 @@ namespace userInterface
         QHBoxLayout* buttonLayout;
         QHBoxLayout* progressLayout;
         QVBoxLayout* vLayout;
-        core::service::UploaderService* uploader;
+        core::service::UploaderService* uploadService;
 
     public:
         FileUploader( QWidget *parent = 0);

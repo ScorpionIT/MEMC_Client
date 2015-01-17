@@ -13,7 +13,7 @@ ServiceConnection::ServiceConnection() : QThread ()
 
 ServiceConnection::~ServiceConnection()
 {
-    qDebug() << "Service connection closed";
+    //qDebug() << "Service connection closed";
     this->server->close();
     delete this->server;
 }
