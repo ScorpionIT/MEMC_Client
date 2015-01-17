@@ -14,13 +14,15 @@ Connection::Connection(QString serverAddr, QString username, QString password)
     if ( this->server->waitForConnected( Connection::SESSION_TIMER ) )
     {
         QString response;
-        this->server->waitForReadyRead( Connection::SESSION_TIMER );
+        if ( server->bytesAvailable() == 0 )
+            this->server->waitForReadyRead( Connection::SESSION_TIMER );
         response = this->server->readLine();
         response.chop( 1 );
 
         this->server->write( QString (username + "\n").toUtf8() );
         this->server->waitForBytesWritten( -1 );
 
+        if ( server->bytesAvailable() == 0 )
         this->server->waitForReadyRead( Connection::SESSION_TIMER );
         response = this->server->readLine();
         response.chop( 1 );
@@ -29,19 +31,20 @@ Connection::Connection(QString serverAddr, QString username, QString password)
             this->server->write( QString (password + "\n").toUtf8() );
             this->server->waitForBytesWritten( -1 );
 
+            if ( server->bytesAvailable() == 0 )
             this->server->waitForReadyRead( Connection::SESSION_TIMER );
             response = this->server->readLine();
             response.chop( 1 );
             if (response == "ok")
             {
-                if (this->server->bytesAvailable() == 0)
+                if ( server->bytesAvailable() == 0 )
                     this->server->waitForReadyRead( Connection::SESSION_TIMER );
                 response = this->server->readLine();
                 response.chop( 1 );
                 if (response.split( "=" )[0] == "s.id")
                 {
                     QString sessionID = response.split( "=" )[1];
-                    if (this->server->bytesAvailable() == 0)
+                    if ( server->bytesAvailable() == 0 )
                         this->server->waitForReadyRead( Connection::SESSION_TIMER );
                     response = this->server->readLine();
                     response.chop( 1 );

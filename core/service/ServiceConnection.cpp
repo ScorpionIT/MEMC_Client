@@ -31,7 +31,7 @@ void ServiceConnection::run()
     if ( this->server->waitForConnected( ServiceConnection::SESSION_TIMER ) )
     {
         QString response;
-        if ( !server->bytesAvailable() )
+        if ( server->bytesAvailable() == 0 )
             this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         response = this->server->readLine();
         response.chop( 1 );
@@ -39,7 +39,7 @@ void ServiceConnection::run()
         this->server->write( QString (this->session->getUsername() + " " + this->session->getID() + "\n").toUtf8() );
         this->server->waitForBytesWritten( -1 );
 
-        if ( !server->bytesAvailable() )
+        if ( server->bytesAvailable() == 0 )
             this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         response = this->server->readLine();
         response.chop( 1 );

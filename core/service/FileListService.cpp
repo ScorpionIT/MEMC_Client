@@ -22,7 +22,7 @@ void FileListService::processService(QTcpSocket *server)
     bool end = false;
     while ( !end )
     {
-        if ( !server->bytesAvailable() )
+        if ( server->bytesAvailable() == 0 )
             server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         message = server->readLine();
         message.chop( 1 );
