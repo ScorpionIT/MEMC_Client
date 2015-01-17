@@ -23,7 +23,8 @@ void FileManagerService::processService(QTcpSocket *server)
     bool end = false;
     while ( !end )
     {
-        server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
+        if ( !server->bytesAvailable() )
+            server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         message = server->readLine();
         message.chop( 1 );
         if ( message.isEmpty() )

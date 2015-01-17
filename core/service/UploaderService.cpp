@@ -29,7 +29,8 @@ void UploaderService::processService(QTcpSocket *server)
     bool end = false;
     while ( !end )
     {
-        server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
+        if ( !server->bytesAvailable() )
+            this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         message = server->readLine();
         message.chop( 1 );
 
@@ -50,7 +51,8 @@ void UploaderService::processService(QTcpSocket *server)
                 server->write( mediaType.toUtf8() );
                 server->waitForBytesWritten( -1 );
 
-                server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
+                if ( !server->bytesAvailable() )
+                    this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
                 message = server->readLine();
                 message.chop( 1 );
 
@@ -59,7 +61,8 @@ void UploaderService::processService(QTcpSocket *server)
                     server->write( this->toUpload.at( mediaNumber )->getFullName().toUtf8()+"\n" );
                     server->waitForBytesWritten( -1 );
 
-                    server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
+                    if ( !server->bytesAvailable() )
+                        this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
                     message = server->readLine();
                     message.chop( 1 );
 
@@ -87,7 +90,8 @@ void UploaderService::processService(QTcpSocket *server)
                                 server->write(chunk);
                                 server->waitForBytesWritten( -1 );
 
-                                server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
+                                if ( !server->bytesAvailable() )
+                                    this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
                                 QString response = server->readLine();
                                 response.chop( 1 );
                                 if (response != QString::number( chunkCounter ) )
@@ -111,7 +115,8 @@ void UploaderService::processService(QTcpSocket *server)
                             server->waitForBytesWritten( -1 );
                         }
 
-                        server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
+                        if ( !server->bytesAvailable() )
+                            this->server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
                         message = server->readLine();
                         message.chop( 1 );
                         if ( message != "ok" )
