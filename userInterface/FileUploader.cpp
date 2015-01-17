@@ -5,7 +5,6 @@ using namespace userInterface;
 
 FileUploader::FileUploader(QWidget *parent) : QWidget(parent)
 {
-    this->selectdFile = new QVector<QFileInfo>;
     this->selectedMediaList = new MediaFileUploadWidgetList();
 
     this->buttonLayout = new QHBoxLayout();
@@ -45,23 +44,19 @@ FileUploader::~FileUploader()
 
 void FileUploader::clearButtonPressed()
 {
-    this->selectdFile->clear();
     this->selectedMediaList->clear();
 }
 
 void FileUploader::stopUploadButtonPressed()
 {
-    this->uploader->stopUpload();
+    this->uploadService->stopUpload();
 }
 
 void FileUploader::browseButtonPressed()
 {
     QStringList chosenFiles = QFileDialog::getOpenFileNames( this, "Select one or more files to open", QDir::homePath(), "Media (*.avi *.mkv *mp3 *.wav)");
     for ( int i = 0; i < chosenFiles.size(); i++ )
-    {
-        this->selectdFile->append( QFileInfo ( chosenFiles[i] ));
         this->selectedMediaList->addMedia( new core::media::MediaFile (chosenFiles[i]) );
-    }
 }
 
 void FileUploader::uploadButtonPressed()
@@ -71,10 +66,10 @@ void FileUploader::uploadButtonPressed()
         this->cleanButton->setEnabled( false );
         this->browseButton->setEnabled( false );
         this->uploadButton->setEnabled( false );
-        uploader = new core::service::UploaderService ( this->selectedMediaList->getMediaFiles() );
-        connect (uploader, SIGNAL( progress( int, core::media::MediaFile* ) ), this, SLOT( uploadProgress( int, core::media::MediaFile* ) ) );
-        connect (uploader, SIGNAL( finish( QString ) ), this, SLOT( uploadFinished( QString) ) );
-        uploader->start();
+        uploadService = new core::service::UploaderService ( this->selectedMediaList->getMediaFiles() );
+        connect (uploadService, SIGNAL( progress( int, core::media::MediaFile* ) ), this, SLOT( uploadProgress( int, core::media::MediaFile* ) ) );
+        connect (uploadService, SIGNAL( finish( QString ) ), this, SLOT( uploadFinished( QString) ) );
+        uploadService->start();
     }
 }
 
@@ -94,12 +89,14 @@ void FileUploader::uploadFinished(QString error)
     {
         this->progressBar->setVisible( false );
         this->stopUploadButton->setVisible( false );
-        this->cleanButton->setEnabled( true );
-        this->browseButton->setEnabled( true );
-        this->uploadButton->setEnabled( true );
     }
     else
         this->progressBar->setFormat( error );
+
+    this->cleanButton->setEnabled( true );
+    this->browseButton->setEnabled( true );
+    this->uploadButton->setEnabled( true );
+
     delete sender();
 }
 

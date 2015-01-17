@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QVector>
-#include <QFileInfo>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFileDialog>
@@ -33,7 +32,6 @@ namespace userInterface
         QHBoxLayout* progressLayout;
         QVBoxLayout* vLayout;
         core::service::UploaderService* uploader;
-        QVector<QFileInfo>* selectdFile;
 
     public:
         FileUploader( QWidget *parent = 0);

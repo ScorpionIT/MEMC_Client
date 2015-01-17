@@ -35,7 +35,7 @@ void UploaderService::processService(QTcpSocket *server)
 
         if (message == "what do you have for me?[MUSIC=1, VIDEO=2, IMAGES=3, FINISH=4]")
         {
-            if ( mediaNumber == this->toUpload.size() || this->stopUploadProcess)
+            if ( mediaNumber == this->toUpload.size() || this->stopUploadProcess )
             {
                 server->write( "4\n" );
                 server->waitForBytesWritten( -1 );

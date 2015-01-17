@@ -24,14 +24,9 @@ void MediaFileWidgetList::addMedia(core::media::MediaFile* mediaFile )
 
 void MediaFileWidgetList::deleteMedia(core::media::MediaFile *file)
 {
-    for (QMap<QListWidgetItem*, core::media::MediaFile*>::iterator i = index->begin(); i != index->end(); i++)
-    {
-        if (i.value() == file)
-        {
-            delete i.key();
-            return;
-        }
-    }
+    QListWidgetItem* item = index->key (file);
+    this->removeItemWidget( item );
+    this->takeItem( this->row ( item ) );
 }
 
 QList<core::media::MediaFile*> MediaFileWidgetList::selectedMedia()
@@ -63,7 +58,6 @@ QListWidgetItem *MediaFileWidgetList::MediaFileWidgetListItem( core::media::Medi
         item->setIcon( IconLoader::getIstance()->getIcon(IconLoader::UNLOCK) );
     else
         item->setIcon( IconLoader::getIstance()->getIcon(IconLoader::LOCK) );
-
 
     QSize tmp = item->sizeHint();
     tmp.setHeight( 50 );
