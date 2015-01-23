@@ -7,7 +7,7 @@ Session* Session::currentSession = nullptr;
 
 Session::Session()
 {
-
+    this->spaceAvaiable = 10;
 }
 
 Session::~Session()
@@ -71,4 +71,9 @@ int Session::getFileManagerPort()
 int Session::getDlnaManagerPort()
 {
     return this->DlnaManagerPort;
+}
+
+int Session::getAvaiableSpace()
+{
+    return this->spaceAvaiable;
 }

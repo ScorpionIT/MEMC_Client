@@ -6,8 +6,11 @@
 #include "userInterface/Login.h"
 #include "userInterface/Library.h"
 #include "userInterface/FileUploader.h"
+#include "userInterface/DlnaManager.h"
 #include "userInterface/MToolPushButton.h"
 #include "userInterface/IconLoader.h"
+#include "userInterface/UserInfo.h"
+#include "userInterface/Spacer.h"
 
 namespace userInterface
 {
@@ -20,8 +23,11 @@ namespace userInterface
         MToolPushButton* libraryButton;
         MToolPushButton* uploadButton;
         MToolPushButton* settingsButton;
+        MToolPushButton* dlnaButton;
         Library* library;
         FileUploader* fileUploader;
+        DlnaManager* dlnaManager;
+        UserInfo* userInfo;
 
     public:
         MainWindow(QWidget *parent = 0);
@@ -33,6 +39,7 @@ namespace userInterface
         void libraryButtonPressed();
         void uploadButtonPressed();
         void settingsButtonPressed();
+        void dlnaButtonPressed();
     };
 }
 

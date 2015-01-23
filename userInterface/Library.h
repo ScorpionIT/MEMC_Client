@@ -7,10 +7,13 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include "MPushButton.h"
+
 #include <userInterface/MediaFileWidgetList.h>
 #include <userInterface/MusicMediaInfo.h>
+#include <userInterface/MovieMediaInfoWidget.h>
 #include <userInterface/MediaInfoView.h>
 #include <userInterface/IconLoader.h>
+
 #include "core/media/MediaFile.h"
 #include "core/service/FileListService.h"
 #include "core/service/FileManagerService.h"

@@ -17,6 +17,8 @@ IconLoader::IconLoader()
     this->icons[IconLoader::CLEAN] = new QPixmap( ICONPATH + "clean.png" );
     this->icons[IconLoader::UPLOAD] = new QPixmap( ICONPATH + "upload.png" );
     this->icons[IconLoader::SETTINGS] = new QPixmap( ICONPATH + "settings.png" );
+    this->icons[IconLoader::DLNA] = new QPixmap( ICONPATH + "dlna.png" );
+    this->icons[IconLoader::DLNA_COLOR] = new QPixmap( ICONPATH + "dlnacolor.png" );
 }
 
 IconLoader::~IconLoader()

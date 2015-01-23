@@ -47,7 +47,11 @@ void FileListService::processService(QTcpSocket *server)
         }
         else
         {
-            this->mediaList->append( new media::MediaFile ( message, type ) );
+            media::MediaFile *mediaFile =  new media::MediaFile ( message, type );
+            if ( mediaFile->getType() != media::INVALIDMEDIA )
+                this->mediaList->append( mediaFile );
+            else
+                qDebug() << "not recognized as media file: " << message;
         }
     }
 }

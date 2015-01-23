@@ -18,7 +18,7 @@ MediaFileWidgetList::~MediaFileWidgetList()
 
 void MediaFileWidgetList::addMedia(core::media::MediaFile* mediaFile )
 {
-    QListWidgetItem* item = this->MediaFileWidgetListItem( mediaFile );
+    QListWidgetItem* item = this->makeMediaFileWidgetListItem( mediaFile );
     index->insert( item, mediaFile );
 }
 
@@ -42,7 +42,11 @@ QList<core::media::MediaFile*> MediaFileWidgetList::selectedMedia()
 
 QList<core::media::MediaFile *> MediaFileWidgetList::getMediaFiles()
 {
-    return index->values();
+    QList<core::media::MediaFile*> mediaFiles;
+    for ( int i = 0; i < this->count(); i++ )
+        mediaFiles.append( this->index->value( this->item( i ) ) );
+
+    return mediaFiles;
 }
 
 void MediaFileWidgetList::clear()
@@ -51,7 +55,7 @@ void MediaFileWidgetList::clear()
     QListWidget::clear();
 }
 
-QListWidgetItem *MediaFileWidgetList::MediaFileWidgetListItem( core::media::MediaFile* file )
+QListWidgetItem *MediaFileWidgetList::makeMediaFileWidgetListItem( core::media::MediaFile* file )
 {
     QListWidgetItem* item = new QListWidgetItem( file->getName(), this );;
     if ( file->isPublic() )

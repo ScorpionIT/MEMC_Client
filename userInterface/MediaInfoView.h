@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+#include "core/media/MediaFile.h"
 
 namespace userInterface
 {
@@ -11,7 +12,7 @@ namespace userInterface
         Q_OBJECT
 
     public:
-        virtual void setMedia () = 0;
+        virtual void setMedia ( core::media::MediaFile* mediaFile ) = 0;
     };
 
 }

@@ -11,7 +11,7 @@ namespace userInterface
     {
 
     public:
-        enum Icon {MOVIE = 0, MUSIC, IMAGE, DEL, LOCK, UNLOCK, LIBRARY, BROWSE, UPLOAD, CLEAN, SETTINGS  };
+        enum Icon {MOVIE = 0, MUSIC, IMAGE, DEL, LOCK, UNLOCK, LIBRARY, BROWSE, UPLOAD, CLEAN, SETTINGS, DLNA, DLNA_COLOR  };
         static IconLoader* getIstance();
         QPixmap getIcon(Icon icon);
 

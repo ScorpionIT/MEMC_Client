@@ -34,7 +34,6 @@ namespace core
             bool isPublic();
             void setPublic ( bool publicMedia );
             ~MediaFile();
-
         };
     }
 }

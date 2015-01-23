@@ -1,5 +1,4 @@
 #include "FileUploader.h"
-#include <QDebug>
 
 using namespace userInterface;
 
@@ -26,9 +25,11 @@ FileUploader::FileUploader(QWidget *parent) : QWidget(parent)
     this->vLayout->addWidget( this->selectedMediaList );
 
     this->progressLayout = new QHBoxLayout();
-    this->progressBar = new QProgressBar();
-    this->progressBar->setVisible( false );
-    this->progressLayout->addWidget( this->progressBar );
+    this->errorMessage = new QLabel("Errore");
+    this->errorMessage->setAlignment( Qt::AlignCenter );
+    this->errorMessage->setStyleSheet( "color:red; font-weight: bold;");
+    this->errorMessage->setVisible( false );
+    this->progressLayout->addWidget( this->errorMessage );
     this->stopUploadButton = new QPushButton( IconLoader::getIstance()->getIcon(IconLoader::DEL), "STOP" );
     this->stopUploadButton->setVisible( false );
     connect( this->stopUploadButton, SIGNAL( clicked() ), this, SLOT( stopUploadButtonPressed()) );
@@ -45,6 +46,7 @@ FileUploader::~FileUploader()
 void FileUploader::clearButtonPressed()
 {
     this->selectedMediaList->clear();
+    this->errorMessage->setVisible( false );
 }
 
 void FileUploader::stopUploadButtonPressed()
@@ -75,23 +77,23 @@ void FileUploader::uploadButtonPressed()
 
 void FileUploader::uploadProgress(int percent, core::media::MediaFile* media)
 {
-    this->progressBar->setValue( percent );
-    this->progressBar->setFormat( media->getName()+" (%p%)");
-    this->progressBar->setVisible( true );
+    QProgressBar* progressBar = this->selectedMediaList->getMediaProgressBar( media );
+    progressBar->setValue( percent );
+    progressBar->setFormat( "%p%");
     this->stopUploadButton->setVisible( true );
     if (percent == 100)
-        this->selectedMediaList->deleteMedia( media );
+        progressBar->setFormat( "Complete" );
 }
 
 void FileUploader::uploadFinished(QString error)
 {
-    if ( error.isEmpty() )
+    this->stopUploadButton->setVisible( false );
+
+    if ( !error.isEmpty() )
     {
-        this->progressBar->setVisible( false );
-        this->stopUploadButton->setVisible( false );
+        this->errorMessage->setVisible( true );
+        this->errorMessage->setText( error );
     }
-    else
-        this->progressBar->setFormat( error );
 
     this->cleanButton->setEnabled( true );
     this->browseButton->setEnabled( true );

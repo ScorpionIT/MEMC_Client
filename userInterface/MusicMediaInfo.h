@@ -26,7 +26,7 @@ namespace userInterface
     public:
         MusicMediaInfo();
         ~MusicMediaInfo();
-        void setMedia();
+        void setMedia(core::media::MediaFile *mediaFile);
     };
 }
 

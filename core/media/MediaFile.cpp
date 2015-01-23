@@ -7,16 +7,26 @@ using namespace media;
 MediaFile::MediaFile(QString serverString, MediaType type)
 {
     QStringList serverData = serverString.split( "$" );
-    this->name = serverData[0].section( ".", 0, -2  );
-    this->fullName = serverData[0];
-    if (serverData[1] == "public")
-        this->publicMedia = true;
+    if (serverData.count() == 2)
+    {
+        this->name = serverData[0].section( ".", 0, -2  );
+        this->fullName = serverData[0];
+        if (serverData[1] == "public")
+            this->publicMedia = true;
+        else
+            this->publicMedia = false;
+
+        this->type = type;
+        this->local = false;
+    }
     else
+    {
+        this->name = "";
+        this->fullName = "";
         this->publicMedia = false;
-
-    this->type = type;
-    this->local = false;
-
+        this->type = MediaType::INVALIDMEDIA;
+        this->local = false;
+    }
 }
 
 MediaFile::MediaFile(QString filepath)

@@ -2,12 +2,12 @@
 #define FILEUPLOADER_H
 
 #include <QWidget>
+#include <QLabel>
 #include <QVector>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QProgressBar>
 #include "userInterface/MPushButton.h"
 #include "userInterface/MediaFileWidgetList.h"
 #include "userInterface/MediaFileUploadWidgetList.h"
@@ -22,8 +22,8 @@ namespace userInterface
         Q_OBJECT
 
     private:
-        MediaFileWidgetList* selectedMediaList;
-        QProgressBar* progressBar;
+        MediaFileUploadWidgetList* selectedMediaList;
+        QLabel* errorMessage;
         MPushButton* cleanButton;
         MPushButton* browseButton;
         MPushButton* uploadButton;

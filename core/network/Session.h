@@ -23,6 +23,7 @@ namespace core
             int fileListPort;
             int fileManagerPort;
             int DlnaManagerPort;
+            int spaceAvaiable;
 
             void setSession ( QString ServerAddress, QString username, QString sessionID );
             void setServicePort (int fileTransfertPort, int fileListPort, int fileManagerPort, int DlnaManagerPort );
@@ -36,6 +37,7 @@ namespace core
             int getFileListPort();
             int getFileManagerPort();
             int getDlnaManagerPort();
+            int getAvaiableSpace();
 
         };
     }

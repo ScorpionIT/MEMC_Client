@@ -23,7 +23,14 @@ HEADERS += \
     userInterface/IconLoader.h \
     core/service/UploaderService.h \
     core/service/FileListService.h \
-    core/service/FileManagerService.h
+    core/service/FileManagerService.h \
+    userInterface/DlnaManager.h \
+    userInterface/MixedMediaFileWidgetList.h \
+    userInterface/UserInfo.h \
+    userInterface/Spacer.h \
+    userInterface/MovieMediaInfoWidget.h \
+    userInterface/GetMovieInfo.h \
+    userInterface/CoverLoader.h
 
 SOURCES += \
     core/media/MediaFile.cpp \
@@ -45,5 +52,12 @@ SOURCES += \
     userInterface/IconLoader.cpp \
     core/service/UploaderService.cpp \
     core/service/FileListService.cpp \
-    core/service/FileManagerService.cpp
+    core/service/FileManagerService.cpp \
+    userInterface/DlnaManager.cpp \
+    userInterface/MixedMediaFileWidgetList.cpp \
+    userInterface/UserInfo.cpp \
+    userInterface/Spacer.cpp \
+    userInterface/MovieMediaInfoWidget.cpp \
+    userInterface/GetMovieInfo.cpp \
+    userInterface/CoverLoader.cpp
 

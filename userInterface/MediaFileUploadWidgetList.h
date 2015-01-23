@@ -4,6 +4,7 @@
 #include <QListWidget>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QProgressBar>
 #include <QLabel>
 #include <QMap>
 #include "userInterface/MediaFileWidgetList.h"
@@ -15,10 +16,12 @@ namespace userInterface
     {
 
     private:
-        virtual QListWidgetItem *MediaFileWidgetListItem( core::media::MediaFile *file );
+        virtual QListWidgetItem *makeMediaFileWidgetListItem( core::media::MediaFile *file );
+        QMap<core::media::MediaFile*, QProgressBar*> progressBars;
 
     public:
         MediaFileUploadWidgetList( QWidget* parent = nullptr );
+        QProgressBar* getMediaProgressBar (core::media::MediaFile *mediaFile );
 
     };
 }

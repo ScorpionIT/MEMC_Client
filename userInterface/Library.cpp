@@ -100,7 +100,7 @@ void Library::addFileList(QList<core::media::MediaFile*> *mediaList, QString res
 void Library::movieButtonPressed()
 {
     this->currentMediaSection = core::media::MediaType::MOVIE;
-    this->setMediaInfoWidget( nullptr );
+    this->setMediaInfoWidget( new MovieMediaInfoWidget() );
     this->movieButton->setEnabled( false );
     this->musicButton->setEnabled( true );
     this->imageButton->setEnabled( true );
@@ -231,6 +231,8 @@ void Library::mediaSelected()
                 this->toPublicButton->setEnabled( true );
                 this->toPrivateButton->setEnabled( false );
             }
+            if ( this->mediaInfo != nullptr )
+                this->mediaInfo->setMedia( selectedMedia.first() );
         }
         else
         {

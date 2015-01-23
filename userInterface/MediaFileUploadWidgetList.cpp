@@ -8,7 +8,12 @@ MediaFileUploadWidgetList::MediaFileUploadWidgetList(QWidget *parent ) : MediaFi
     this->setSelectionMode( QAbstractItemView::NoSelection);
 }
 
-QListWidgetItem *MediaFileUploadWidgetList::MediaFileWidgetListItem( core::media::MediaFile* file )
+QProgressBar *MediaFileUploadWidgetList::getMediaProgressBar(core::media::MediaFile *mediaFile)
+{
+    return this->progressBars.value( mediaFile );
+}
+
+QListWidgetItem *MediaFileUploadWidgetList::makeMediaFileWidgetListItem( core::media::MediaFile* file )
 {
     QListWidgetItem* item = new QListWidgetItem( "", this );
     QSize tmp = item->sizeHint();
@@ -20,6 +25,9 @@ QListWidgetItem *MediaFileUploadWidgetList::MediaFileWidgetListItem( core::media
     QLabel* fileTypeIcon = new QLabel();
     QPixmap typeIcon;
     QLabel* mediaName = new QLabel( file->getName() );
+    QProgressBar* progressBar = new QProgressBar();
+
+    this->progressBars.insert( file, progressBar );
 
     mediaName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mediaName->setAlignment( Qt::AlignLeft | Qt::AlignVCenter );
@@ -35,6 +43,7 @@ QListWidgetItem *MediaFileUploadWidgetList::MediaFileWidgetListItem( core::media
     fileTypeIcon->setPixmap( typeIcon );
     layout->addWidget( fileTypeIcon );
     layout->addWidget( mediaName );
+    layout->addWidget( progressBar );
 
     widget->setLayout( layout );
 

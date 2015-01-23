@@ -38,7 +38,7 @@ MusicMediaInfo::~MusicMediaInfo()
 
 }
 
-void MusicMediaInfo::setMedia()
+void MusicMediaInfo::setMedia( core::media::MediaFile* mediaFile )
 {
 
 }

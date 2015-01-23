@@ -19,7 +19,7 @@ namespace userInterface
         QMap<QListWidgetItem*, core::media::MediaFile*>* index;
 
     protected:
-        virtual QListWidgetItem *MediaFileWidgetListItem(core::media::MediaFile *file );
+        virtual QListWidgetItem *makeMediaFileWidgetListItem(core::media::MediaFile *file );
 
     public:
         MediaFileWidgetList( QWidget* parent = nullptr );
