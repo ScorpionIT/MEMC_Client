@@ -2,8 +2,9 @@
 #define SERVICECONNECTION_H
 
 #include <QThread>
-#include <QTcpSocket>
 #include <QString>
+#include <QTcpSocket>
+
 #include "core/network/Session.h"
 
 namespace core
@@ -24,7 +25,7 @@ namespace core
 
         protected:
             static const unsigned long SESSION_TIMER;
-            void setPort (int serverPort );
+            void setPort ( int serverPort );
             virtual void processService(QTcpSocket* server) = 0;
 
         public:

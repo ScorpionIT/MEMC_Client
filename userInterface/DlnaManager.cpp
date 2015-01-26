@@ -58,21 +58,21 @@ DlnaManager::~DlnaManager()
 
 void DlnaManager::addToSharedPressed()
 {
-    QList<QListWidgetItem*> selected = this->myMediaList->selectedItems();
-    for ( QList<QListWidgetItem*>::iterator i = selected.begin(); i != selected.end(); i++ )
+    QList<core::media::MediaFile*> selected = this->myMediaList->selectedMedia();
+    for ( QList<core::media::MediaFile*>::iterator i = selected.begin(); i != selected.end(); i++ )
     {
-        this->myMediaList->takeItem( this->myMediaList->row( (*i) ));
-        this->sharedMediaList->insertItem( this->sharedMediaList->count(), (*i) );
+        this->myMediaList->deleteMedia( *i );
+        this->sharedMediaList->addMedia( *i );
     }
 }
 
 void DlnaManager::removeFromSharedPressed()
 {
-    QList<QListWidgetItem*> selected = this->sharedMediaList->selectedItems();
-    for ( QList<QListWidgetItem*>::iterator i = selected.begin(); i != selected.end(); i++ )
+    QList<core::media::MediaFile*> selected = this->sharedMediaList->selectedMedia();
+    for ( QList<core::media::MediaFile*>::iterator i = selected.begin(); i != selected.end(); i++ )
     {
-        this->sharedMediaList->takeItem( this->sharedMediaList->row( (*i) ));
-        this->myMediaList->insertItem( this->myMediaList->count(), (*i) );
+        this->sharedMediaList->deleteMedia( *i );
+        this->myMediaList->addMedia( *i );
     }
 }
 
@@ -85,7 +85,15 @@ void DlnaManager::cleanAndUpdatePressed()
 
 void DlnaManager::confirmDlnaSharePressed()
 {
-    QMessageBox::warning( this, "Function not implemented", "Function not implemented yet", QMessageBox::Ok );
+    core::service::DlnaService* dlnaService = new core::service::DlnaService(this->sharedMediaList->getMediaFiles(), core::service::DLNAOperation::NEWSHARE );
+    connect (dlnaService, SIGNAL( finish(QString) ), this, SLOT( dlnaServiceResponse(QString) ));
+    dlnaService->start();
+}
+
+void DlnaManager::dlnaServiceResponse(QString message)
+{
+    if (message != "ok")
+        QMessageBox::critical( this, "Server error", message, QMessageBox::Ok );
 }
 
 void DlnaManager::loadMediaList()
@@ -101,9 +109,14 @@ void DlnaManager::loadMediaList()
     fileListService = new core::service::FileListService ( core::media::MediaType::IMAGE );
     connect( fileListService, SIGNAL( finish( QList<core::media::MediaFile*>*,QString ) ), this, SLOT( addDLNAFileList( QList<core::media::MediaFile*>*,QString ) ) );
     fileListService->start();
+
+    core::service::DlnaService* dlnaService = new core::service::DlnaService(this->sharedMediaList->getMediaFiles(), core::service::DLNAOperation::SHARESTATUS );
+    connect (dlnaService, SIGNAL( shareStatus(QList<core::media::MediaFile*>*) ), this, SLOT( addSharedMedia(QList<core::media::MediaFile*>*) ) );
+    connect (dlnaService, SIGNAL( finish(QString) ), this, SLOT( dlnaServiceResponse(QString) ));
+    dlnaService->start();
 }
 
-void DlnaManager::addDLNAFileList(QList<core::media::MediaFile*> *mediaList, QString response)
+void DlnaManager::addDLNAFileList(QList<core::media::MediaFile*> *mediaList, QString response )
 {
     if (response == "end")
     {
@@ -112,4 +125,16 @@ void DlnaManager::addDLNAFileList(QList<core::media::MediaFile*> *mediaList, QSt
         this->myMediaList->setCurrentItem( this->myMediaList->item( 0 ) );
     }
     delete sender();
+}
+
+void DlnaManager::addSharedMedia(QList<core::media::MediaFile *> *shared)
+{
+    qDebug() << "ESEGUI";
+    qDebug() << shared->count();
+    if ( !shared->isEmpty() )
+    {
+        for ( QList<core::media::MediaFile*>::iterator i = shared->begin() ; i != shared->end(); i++ )
+            this->sharedMediaList->addMedia( (*i) );
+        this->sharedMediaList->setCurrentItem( this->myMediaList->item( 0 ) );
+    }
 }

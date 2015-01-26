@@ -11,6 +11,7 @@
 #include "userInterface/Spacer.h"
 
 #include "core/service/FileListService.h"
+#include "core/service/DlnaService.h"
 #include "core/media/MediaFile.h"
 
 namespace userInterface
@@ -39,11 +40,13 @@ namespace userInterface
     signals:
 
     private slots:
-        void addDLNAFileList(QList<core::media::MediaFile*> *mediaList, QString response);
+        void addDLNAFileList( QList<core::media::MediaFile*> *mediaList, QString response );
+        void addSharedMedia (QList<core::media::MediaFile *> *shared );
         void addToSharedPressed();
         void removeFromSharedPressed();
         void cleanAndUpdatePressed();
         void confirmDlnaSharePressed();
+        void dlnaServiceResponse( QString message );
     };
 }
 

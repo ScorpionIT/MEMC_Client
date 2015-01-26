@@ -30,7 +30,8 @@ HEADERS += \
     userInterface/Spacer.h \
     userInterface/MovieMediaInfoWidget.h \
     userInterface/GetMovieInfo.h \
-    userInterface/CoverLoader.h
+    userInterface/CoverLoader.h \
+    core/service/DlnaService.h
 
 SOURCES += \
     core/media/MediaFile.cpp \
@@ -59,5 +60,6 @@ SOURCES += \
     userInterface/Spacer.cpp \
     userInterface/MovieMediaInfoWidget.cpp \
     userInterface/GetMovieInfo.cpp \
-    userInterface/CoverLoader.cpp
+    userInterface/CoverLoader.cpp \
+    core/service/DlnaService.cpp
 

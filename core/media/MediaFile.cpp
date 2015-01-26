@@ -1,5 +1,4 @@
 #include "core/media/MediaFile.h"
-#include <QDebug>
 
 using namespace core;
 using namespace media;

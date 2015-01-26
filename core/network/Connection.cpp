@@ -52,7 +52,7 @@ Connection::Connection(QString serverAddr, QString username, QString password)
                     // TO DO
                     Session* session = Session::getSession();
                     session->setSession(serverAddr, username, sessionID);
-                    session->setServicePort(80002, 80001, 80008, 0);
+                    session->setServicePort(80002, 80001, 80008, 80007);
                     // TO DO
 
                     connect ( this->server, SIGNAL( readyRead() ), this, SLOT ( procesMessage() ) );
