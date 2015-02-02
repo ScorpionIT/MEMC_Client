@@ -3,7 +3,7 @@
 using namespace core;
 using namespace media;
 
-MediaFile::MediaFile(QString serverString, MediaType type)
+MediaFile::MediaFile(QString serverString, MediaType type, bool manualInsert)
 {
     QStringList serverData = serverString.split( "$" );
     if (serverData.count() == 2)
@@ -15,6 +15,14 @@ MediaFile::MediaFile(QString serverString, MediaType type)
         else
             this->publicMedia = false;
 
+        this->type = type;
+        this->local = false;
+    }
+    else if ( manualInsert )
+    {
+        this->name = serverString;
+        this->fullName = serverString;
+        this->publicMedia = true;
         this->type = type;
         this->local = false;
     }
@@ -50,7 +58,7 @@ MediaType MediaFile::recognizeType( QString extension )
 {
     if ( extension ==  "mkv" || extension ==  "avi")
         return MediaType::MOVIE;
-    else if ( extension ==  "mp3" || extension ==  "wav")
+    else if ( extension ==  "ogg" || extension ==  "mp3")
         return MediaType::MUSIC;
     else
         return MediaType::INVALIDMEDIA;

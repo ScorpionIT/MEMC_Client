@@ -8,11 +8,12 @@
 #include <QHBoxLayout>
 #include "MPushButton.h"
 
-#include <userInterface/MediaFileWidgetList.h>
-#include <userInterface/MusicMediaInfo.h>
-#include <userInterface/MovieMediaInfoWidget.h>
-#include <userInterface/MediaInfoView.h>
-#include <userInterface/IconLoader.h>
+#include "userInterface/MediaFileWidgetList.h"
+#include "userInterface/MusicMediaInfo.h"
+#include "userInterface/MovieMediaInfoWidget.h"
+#include "userInterface/MediaInfoView.h"
+#include "userInterface/IconLoader.h"
+#include "userInterface/MediaPlayerWidget.h"
 
 #include "core/media/MediaFile.h"
 #include "core/service/FileListService.h"
@@ -31,6 +32,7 @@ namespace userInterface
         MPushButton* deleteMediaButton;
         MPushButton* toPublicButton;
         MPushButton* toPrivateButton;
+        MPushButton* playStopButton;
         MediaFileWidgetList* mediaList;
         QHBoxLayout* buttonsLayout;
         QHBoxLayout* mediaButtonLayout;
@@ -47,6 +49,7 @@ namespace userInterface
         ~Library();
 
     signals:
+        void playMedia (core::media::MediaFile *mediaFile);
 
     private slots:
         void addFileList(QList<core::media::MediaFile*>* mediaList, QString response);
@@ -56,6 +59,7 @@ namespace userInterface
         void deleteMediaPressed();
         void toPrivatePressed();
         void toPublicPressed();
+        void playStopPressed();
         void mediaSelected();
         void serviceResponse( QString response );
     };

@@ -7,6 +7,7 @@
 #include "userInterface/Library.h"
 #include "userInterface/FileUploader.h"
 #include "userInterface/DlnaManager.h"
+#include "userInterface/MediaPlayerWidget.h"
 #include "userInterface/MToolPushButton.h"
 #include "userInterface/IconLoader.h"
 #include "userInterface/UserInfo.h"
@@ -24,9 +25,11 @@ namespace userInterface
         MToolPushButton* uploadButton;
         MToolPushButton* settingsButton;
         MToolPushButton* dlnaButton;
+        MToolPushButton* mediaPlayerButton;
         Library* library;
         FileUploader* fileUploader;
         DlnaManager* dlnaManager;
+        MediaPlayerWidget* mediaPlayer;
         UserInfo* userInfo;
 
     public:
@@ -40,6 +43,7 @@ namespace userInterface
         void uploadButtonPressed();
         void settingsButtonPressed();
         void dlnaButtonPressed();
+        void mediaPlayerButtonPressed();
     };
 }
 

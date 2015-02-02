@@ -16,6 +16,8 @@
 
 namespace userInterface
 {
+    enum DlnaState { RUNNING, STOPPED, UPDATESTATE };
+
     class DlnaManager : public QWidget
     {
         Q_OBJECT
@@ -26,12 +28,16 @@ namespace userInterface
         MPushButton* addToSharedButton;
         MPushButton* removeFromSharedButton;
         MPushButton* cleanAndUpdateButton;
-        MPushButton* confirmDlnaShareButton;
+        MPushButton* startDlnaShareButton;
+        MPushButton* stopDlnaShareButton;
         QHBoxLayout* mainLayout;
         QVBoxLayout* buttonLayout;
         QVBoxLayout* supportLayout;
         QLabel* supportLabel;
+        DlnaState shareStatus;
+        bool waitShared;
         void loadMediaList();
+        void setState (DlnaState state);
 
     public:
         DlnaManager(QWidget *parent = 0);
@@ -40,12 +46,13 @@ namespace userInterface
     signals:
 
     private slots:
-        void addDLNAFileList( QList<core::media::MediaFile*> *mediaList, QString response );
+        void addMediaFileList( QList<core::media::MediaFile*> *mediaList, QString response );
         void addSharedMedia (QList<core::media::MediaFile *> *shared );
         void addToSharedPressed();
         void removeFromSharedPressed();
         void cleanAndUpdatePressed();
-        void confirmDlnaSharePressed();
+        void startDlnaSharePressed();
+        void stopDlnaSharePressed();
         void dlnaServiceResponse( QString message );
     };
 }

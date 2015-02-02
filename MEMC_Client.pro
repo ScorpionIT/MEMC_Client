@@ -1,5 +1,8 @@
-QT += core gui widgets network
+QT += core gui widgets network multimedia multimediawidgets
 CONFIG += c++11
+
+INCLUDEPATH += "$$_PRO_FILE_PWD_/3rdparty/vlc-qt/include"
+LIBS += -L"$$_PRO_FILE_PWD_/3rdparty/vlc-qt/lib/" -lvlc-qt -lvlc-qt-widgets
 
 TARGET = MEMC_Client
 
@@ -29,9 +32,13 @@ HEADERS += \
     userInterface/UserInfo.h \
     userInterface/Spacer.h \
     userInterface/MovieMediaInfoWidget.h \
-    userInterface/GetMovieInfo.h \
     userInterface/CoverLoader.h \
-    core/service/DlnaService.h
+    core/service/DlnaService.h \
+    core/service/StreamingService.h \
+    userInterface/MediaPlayerWidget.h \
+    userInterface/admin/AddUserWidget.h \
+    userInterface/FilmCoverUploader.h \
+    userInterface/admin/AdminWindow.h
 
 SOURCES += \
     core/media/MediaFile.cpp \
@@ -59,7 +66,10 @@ SOURCES += \
     userInterface/UserInfo.cpp \
     userInterface/Spacer.cpp \
     userInterface/MovieMediaInfoWidget.cpp \
-    userInterface/GetMovieInfo.cpp \
     userInterface/CoverLoader.cpp \
-    core/service/DlnaService.cpp
-
+    core/service/DlnaService.cpp \
+    core/service/StreamingService.cpp \
+    userInterface/MediaPlayerWidget.cpp \
+    userInterface/admin/AddUserWidget.cpp \
+    userInterface/FilmCoverUploader.cpp \
+    userInterface/admin/AdminWindow.cpp

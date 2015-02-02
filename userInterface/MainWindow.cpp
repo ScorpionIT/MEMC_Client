@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->fileUploader = nullptr;
     this->dlnaManager = nullptr;
     this->userInfo = nullptr;
+    this->mediaPlayer = nullptr;
 }
 
 MainWindow::~MainWindow()
@@ -24,6 +25,8 @@ MainWindow::~MainWindow()
         delete this->dlnaManager;
     if (this->userInfo != nullptr)
         delete this->userInfo;
+    if (this->mediaPlayer != nullptr )
+        delete this->mediaPlayer;
 }
 
 void MainWindow::configureToolBar()
@@ -45,7 +48,7 @@ void MainWindow::configureToolBar()
     this->toolBar->addWidget( this->uploadButton );
     this->toolBar->addSeparator();
 
-    this->dlnaButton = new MToolPushButton ( IconLoader::getIstance()->getIcon( IconLoader::DLNA ), "DLNA" );
+    this->dlnaButton = new MToolPushButton ( IconLoader::getIstance()->getIcon( IconLoader::DLNA_GREY ), "DLNA" );
     connect(this->dlnaButton, SIGNAL( clicked() ), this, SLOT( dlnaButtonPressed() ) );
     this->toolBar->addWidget( this->dlnaButton );
     this->toolBar->addSeparator();
@@ -53,6 +56,11 @@ void MainWindow::configureToolBar()
     this->settingsButton = new MToolPushButton ( IconLoader::getIstance()->getIcon( IconLoader::SETTINGS ), "Settings" );
     connect( this->settingsButton, SIGNAL( clicked() ), this, SLOT( settingsButtonPressed() ) );
     this->toolBar->addWidget( this->settingsButton );
+    this->toolBar->addSeparator();
+
+    this->mediaPlayerButton = new MToolPushButton ( IconLoader::getIstance()->getIcon( IconLoader::PLAYER ), "MediaPlayer" );
+    connect( this->mediaPlayerButton, SIGNAL( clicked() ), this, SLOT( mediaPlayerButtonPressed() ) );
+    this->toolBar->addWidget( this->mediaPlayerButton );
 
     this->toolBar->addWidget( new Spacer( this, SpacerOrientation::HORIZZONTAL ) );
 
@@ -65,6 +73,8 @@ void MainWindow::newConnection()
     this->fileUploader = new FileUploader();
     this->dlnaManager = new DlnaManager();
     this->userInfo = new UserInfo();
+    this->mediaPlayer = new MediaPlayerWidget();
+    connect (this->library, SIGNAL( playMedia(core::media::MediaFile*) ), this->mediaPlayer, SLOT( setMedia(core::media::MediaFile*) ) );
     this->toolBar->addSeparator();
     this->toolBar->addWidget( userInfo );
     this->libraryButtonPressed();
@@ -77,9 +87,11 @@ void MainWindow::libraryButtonPressed()
     this->uploadButton->setEnabled( true );
     this->dlnaButton->setEnabled( true );
     this->settingsButton->setEnabled( true );
+    this->mediaPlayerButton->setEnabled( true );
 
     this->fileUploader->setParent( nullptr );
     this->dlnaManager->setParent( nullptr );
+    this->mediaPlayer->setParent( nullptr );
     this->setCentralWidget( this->library );
 }
 
@@ -89,9 +101,11 @@ void MainWindow::uploadButtonPressed()
     this->uploadButton->setEnabled( false );
     this->dlnaButton->setEnabled( true );
     this->settingsButton->setEnabled( true );
+    this->mediaPlayerButton->setEnabled( true );
 
     this->library->setParent( nullptr );
     this->dlnaManager->setParent( nullptr );
+    this->mediaPlayer->setParent( nullptr );
     this->setCentralWidget( this->fileUploader );
 }
 
@@ -101,10 +115,12 @@ void MainWindow::settingsButtonPressed()
     this->uploadButton->setEnabled( true );
     this->dlnaButton->setEnabled( true );
     this->settingsButton->setEnabled( false );
+    this->mediaPlayerButton->setEnabled( true );
 
     this->library->setParent( nullptr );
     this->fileUploader->setParent( nullptr );
     this->dlnaManager->setParent( nullptr );
+    this->mediaPlayer->setParent( nullptr );
     this->setCentralWidget( nullptr );
 }
 
@@ -114,8 +130,24 @@ void MainWindow::dlnaButtonPressed()
     this->uploadButton->setEnabled( true );
     this->dlnaButton->setEnabled( false );
     this->settingsButton->setEnabled( true );
+    this->mediaPlayerButton->setEnabled( true );
 
     this->library->setParent( nullptr );
     this->fileUploader->setParent( nullptr );
+    this->mediaPlayer->setParent( nullptr );
     this->setCentralWidget( this->dlnaManager );
+}
+
+void MainWindow::mediaPlayerButtonPressed()
+{
+    this->libraryButton->setEnabled( true );
+    this->uploadButton->setEnabled( true );
+    this->dlnaButton->setEnabled( true );
+    this->settingsButton->setEnabled( true );
+    this->mediaPlayerButton->setEnabled( false );
+
+    this->library->setParent( nullptr );
+    this->fileUploader->setParent( nullptr );
+    this->dlnaManager->setParent( nullptr );
+    this->setCentralWidget( this->mediaPlayer );
 }

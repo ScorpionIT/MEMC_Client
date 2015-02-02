@@ -10,7 +10,7 @@
 #include "userInterface/MPushButton.h"
 #include "userInterface/IconLoader.h"
 #include "userInterface/Spacer.h"
-#include "userInterface/GetMovieInfo.h"
+#include "userInterface/FilmCoverUploader.h"
 
 namespace userInterface
 {

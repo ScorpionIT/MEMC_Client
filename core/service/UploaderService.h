@@ -27,7 +27,7 @@ namespace core
             void stopUpload();
 
         signals:
-            void progress(int percent, core::media::MediaFile* mediaFile);
+            void progress(int percentage, core::media::MediaFile* mediaFile);
             void finish ( QString status );
 
         };

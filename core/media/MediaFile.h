@@ -24,7 +24,7 @@ namespace core
             MediaType recognizeType(QString extension);
 
         public:
-            MediaFile(QString serverString, MediaType type);
+            MediaFile(QString serverString, MediaType type, bool manualInsert = false);
             MediaFile(QString filepath);
             MediaFile();
             QString getName();

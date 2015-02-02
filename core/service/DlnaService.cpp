@@ -27,7 +27,6 @@ void DlnaService::processService(QTcpSocket *server)
             server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         message = server->readLine();
         message.chop( 1 );
-        qDebug() << message;
         if ( message.isEmpty() )
         {
             end = true;
@@ -63,13 +62,13 @@ void DlnaService::processService(QTcpSocket *server)
         }
         else if ( message == "ok" )
         {
-            qDebug() << "va" << this->operation;
             if ( this->operation == DLNAOperation::SHARESTATUS )
             {
-                qDebug() << "va";
                 emit this->shareStatus (mediaList);
+                emit this->finish ( "SHARESTATUS_OK");
             }
-            emit this->finish( message );
+            else
+                emit this->finish( message );
             end = true;
         }
         else if ( message == "not running" )
@@ -87,11 +86,11 @@ void DlnaService::processService(QTcpSocket *server)
             if ( tokens.count() == 2 )
             {
                 if( tokens[0] == "m" )
-                    mediaList->append( new media::MediaFile( tokens[1], media::MUSIC ) );
+                    mediaList->append( new media::MediaFile( tokens[1], media::MUSIC, true ) );
                 else if( tokens[0] == "v" )
-                    mediaList->append( new media::MediaFile( tokens[1], media::MOVIE ) );
+                    mediaList->append( new media::MediaFile( tokens[1], media::MOVIE, true ) );
                 else if( tokens[0] == "i" )
-                    mediaList->append( new media::MediaFile( tokens[1], media::IMAGE ) );
+                    mediaList->append( new media::MediaFile( tokens[1], media::IMAGE, true ) );
             }
             else
             {

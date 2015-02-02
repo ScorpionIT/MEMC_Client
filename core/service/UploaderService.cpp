@@ -33,8 +33,11 @@ void UploaderService::processService(QTcpSocket *server)
             server->waitForReadyRead( ServiceConnection::SESSION_TIMER );
         message = server->readLine();
         message.chop( 1 );
-
-        if (message == "what do you have for me?[MUSIC=1, VIDEO=2, IMAGES=3, FINISH=4]")
+        if ( message.isEmpty() )
+        {
+            end = true;
+        }
+        else if (message == "what do you have for me?[MUSIC=1, VIDEO=2, IMAGES=3, FINISH=4]")
         {
             if ( mediaNumber == this->toUpload.size() || this->stopUploadProcess )
             {
@@ -133,6 +136,6 @@ void UploaderService::processService(QTcpSocket *server)
         else
              emit finish( "unknow initial message: " + message );
     }
-    emit finish( stopCause );
     server->close();
+    emit finish( stopCause );
 }

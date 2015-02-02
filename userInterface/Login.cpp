@@ -4,13 +4,26 @@ using namespace userInterface;
 
 Login::Login(QWidget *parent) : QWidget(parent)
 {
+    this->serverAnnunce = new QUdpSocket();
+    this->serverAnnunce->bind(79000, QUdpSocket::ShareAddress);
+    connect (this->serverAnnunce, SIGNAL( readyRead() ), this, SLOT( newServerAnnunce() ) );
+
+    this->advancedMode = false;
     this->setWindowTitle( "MEMC - Login");
-    this->hLayout = new QHBoxLayout();
+
+    this->serverList = new QListWidget();
+    this->serverList->setAlternatingRowColors( true );
+    connect ( this->serverList, SIGNAL( itemSelectionChanged() ), this, SLOT( setServerAddress() ) );
+
+    this->serverAddressLayout = new QHBoxLayout();
     this->serverAddressLabel = new QLabel ( "Server Address" );
     this->serverAddressLabel->setMinimumWidth ( 100 );
+    this->serverAddressLabel->setVisible( false );
     this->serverAddress = new QLineEdit ();
-    this->hLayout->addWidget( this->serverAddressLabel );
-    this->hLayout->addWidget( this->serverAddress );
+    this->serverAddress->setVisible( false );
+
+    this->serverAddressLayout->addWidget( this->serverAddressLabel );
+    this->serverAddressLayout->addWidget( this->serverAddress );
 
     this->hLayout2 = new QHBoxLayout();
     this->usernameLabel = new QLabel ( "Username" );
@@ -27,15 +40,28 @@ Login::Login(QWidget *parent) : QWidget(parent)
     this->hLayout3->addWidget( this->passwordLabel );
     this->hLayout3->addWidget( this->password );
 
-    this->loginButton = new QPushButton ( "Login" );
-    connect ( this->loginButton, SIGNAL( pressed() ), this, SLOT( loginButtonPressed() ) );
+    this->buttonLayout = new QHBoxLayout();
 
-    this->vLayout = new QVBoxLayout();
-    this->vLayout->addLayout( this->hLayout );
-    this->vLayout->addLayout( this->hLayout2 );
-    this->vLayout->addLayout( this->hLayout3 );
-    this->vLayout->addWidget( this->loginButton );
-    this->setLayout( vLayout );
+    this->advancedOptionButton = new QPushButton ( "Advanced");
+    connect( this->advancedOptionButton, SIGNAL( clicked() ), this, SLOT( advancedOptionButtonPressed() ) );
+    this->buttonLayout->addWidget( this->advancedOptionButton );
+
+    this->loginButton = new QPushButton ( "Login" );
+    connect( this->loginButton, SIGNAL( pressed() ), this, SLOT( loginButtonPressed() ) );
+    this->buttonLayout->addWidget( this->loginButton );
+
+    this->adminLoginButton = new QPushButton ( "Login as Admin" );
+    this->adminLoginButton->setVisible( false );
+    connect( this->adminLoginButton, SIGNAL( clicked() ), this, SLOT( adminLoginButtonPressed() ) );
+    this->buttonLayout->addWidget( this->adminLoginButton );
+
+    this->mainLayout = new QVBoxLayout();
+    this->mainLayout->addWidget( this->serverList );
+    this->mainLayout->addLayout( this->serverAddressLayout );
+    this->mainLayout->addLayout( this->hLayout2 );
+    this->mainLayout->addLayout( this->hLayout3 );
+    this->mainLayout->addLayout( this->buttonLayout );
+    this->setLayout( mainLayout );
 
     // DEBUG FAST LOGIN
     this->serverAddress->setText( "127.0.0.1" );
@@ -53,10 +79,10 @@ Login::~Login()
     delete usernameLabel;
     delete password;
     delete passwordLabel;
-    delete hLayout;
+    delete serverAddressLayout;
     delete hLayout2;
     delete hLayout3;
-    delete vLayout;
+    delete mainLayout;
 }
 
 void Login::loginButtonPressed()
@@ -81,5 +107,56 @@ void Login::loginButtonPressed()
         this->loginButton->setText( "Login" );
         QMessageBox::warning(this, "Warning", "Impossibile connettersi: \n"+connection->getLastError());
     }
+}
+
+void Login::adminLoginButtonPressed()
+{
+    emit adminLoginSuccesful();
+    delete this;
+}
+
+void Login::advancedOptionButtonPressed()
+{
+    if ( this->advancedMode )
+    {
+        this->serverAddressLabel->setVisible( false );
+        this->serverAddress->setVisible( false );
+        this->adminLoginButton->setVisible( false );
+        this->advancedMode = false;
+    }
+    else
+    {
+        this->serverAddressLabel->setVisible( true );
+        this->serverAddress->setVisible( true );
+        this->adminLoginButton->setVisible( true );
+        this->advancedMode = true;
+    }
+}
+
+void Login::newServerAnnunce()
+{
+    while ( this->serverAnnunce->hasPendingDatagrams() )
+    {
+        QByteArray datagram;
+        QHostAddress sender;
+        datagram.resize( this->serverAnnunce->pendingDatagramSize() );
+        this->serverAnnunce->readDatagram( datagram.data(), datagram.size(), &sender );
+
+        if (datagram == "MEMC-SERVER")
+        {
+            QString toMatch = "MEMC SERVER - " + sender.toString();
+            QList<QListWidgetItem *> servers = this->serverList->findItems( toMatch, Qt::MatchExactly );
+            if ( servers.count() == 0 )
+                new QListWidgetItem ( toMatch, this->serverList );
+        }
+    }
+}
+
+void Login::setServerAddress()
+{
+    QList<QListWidgetItem *> items = this->serverList->selectedItems();
+
+    if ( items.count() > 0 )
+         this->serverAddress->setText( items.first()->text().split("-")[1].replace(" ", "") );
 }
 

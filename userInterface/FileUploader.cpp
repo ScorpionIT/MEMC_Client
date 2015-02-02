@@ -56,7 +56,7 @@ void FileUploader::stopUploadButtonPressed()
 
 void FileUploader::browseButtonPressed()
 {
-    QStringList chosenFiles = QFileDialog::getOpenFileNames( this, "Select one or more files to open", QDir::homePath(), "Media (*.avi *.mkv *mp3 *.wav)");
+    QStringList chosenFiles = QFileDialog::getOpenFileNames( this, "Select one or more files to open", QDir::homePath(), "Media Files (*.avi *.mkv *ogg *.mp3)");
     for ( int i = 0; i < chosenFiles.size(); i++ )
         this->selectedMediaList->addMedia( new core::media::MediaFile (chosenFiles[i]) );
 }

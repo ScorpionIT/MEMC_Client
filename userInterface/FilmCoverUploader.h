@@ -52,9 +52,9 @@ namespace userInterface
 
     private slots:
         void findMovieInfo(int page = 1);
-        void dataRecived(QNetworkReply* recivedData);
-        void posterRecived(QNetworkReply* recivedData);
-        void overviewRecived(QNetworkReply* recivedData);
+        void dataReceived(QNetworkReply* recivedData);
+        void posterReceived(QNetworkReply* recivedData);
+        void overviewReceived(QNetworkReply* recivedData);
         void processSelectedMedia();
         void getNextPage();
         void getPreviousPage();

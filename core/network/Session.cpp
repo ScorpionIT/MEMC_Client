@@ -1,4 +1,5 @@
 #include "Session.h"
+#include <QDebug>
 
 using namespace core;
 using namespace network;
@@ -20,12 +21,14 @@ void Session::setSession(QString serverAddress, QString username, QString sessio
     this->serverAddress = serverAddress;
     this->username = username;
     this->sessionID = sessionID;
+    qDebug() << username << sessionID;
 }
 
-void Session::setServicePort(int fileTransfertPort, int fileListPort, int fileManagerPort, int DlnaManagerPort)
+void Session::setServicePort(int fileTransfertPort, int fileListPort, int streamingPort, int fileManagerPort, int DlnaManagerPort)
 {
     this->fileTransferPort = fileTransfertPort;
     this->fileListPort = fileListPort;
+    this->streamingPort = streamingPort;
     this->fileManagerPort = fileManagerPort;
     this->DlnaManagerPort = DlnaManagerPort;
 }
@@ -61,6 +64,11 @@ int Session::getFileTransferPort()
 int Session::getFileListPort()
 {
     return this->fileListPort;
+}
+
+int Session::getStreamingPort()
+{
+    return this->streamingPort;
 }
 
 int Session::getFileManagerPort()

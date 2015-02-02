@@ -1,4 +1,4 @@
-#include "GetMovieInfo.h"
+#include "FilmCoverUploader.h"
 
 using namespace userInterface;
 
@@ -86,11 +86,11 @@ void GetMovieInfo::findMovieInfo(int page)
 
     QString apiKey = "57983e31fb435df4df77afb854740ea9";
     QNetworkAccessManager *findMovieRequest = new QNetworkAccessManager(this);
-    connect( findMovieRequest, SIGNAL( finished( QNetworkReply* ) ), this, SLOT( dataRecived( QNetworkReply* ) ) );
+    connect( findMovieRequest, SIGNAL( finished( QNetworkReply* ) ), this, SLOT( dataReceived( QNetworkReply* ) ) );
     findMovieRequest->get( QNetworkRequest( QUrl( "http://api.tmdb.org/3/search/multi?api_key=" + apiKey + "&query=" + query + "&language=en&page=" + QString::number( page ) ) ) );
 }
 
-void GetMovieInfo::dataRecived( QNetworkReply * recivedData )
+void GetMovieInfo::dataReceived( QNetworkReply * recivedData )
 {
     this->searchResult->clear();
     QJsonDocument data = QJsonDocument::fromJson( recivedData->readAll() );
@@ -144,7 +144,7 @@ void GetMovieInfo::dataRecived( QNetworkReply * recivedData )
     }
 }
 
-void GetMovieInfo::posterRecived(QNetworkReply *recivedData)
+void GetMovieInfo::posterReceived(QNetworkReply *recivedData)
 {
     if ( recivedData->request() == *this->lastPosterNetworkRequest )
     {
@@ -156,7 +156,7 @@ void GetMovieInfo::posterRecived(QNetworkReply *recivedData)
     }
 }
 
-void GetMovieInfo::overviewRecived(QNetworkReply *recivedData)
+void GetMovieInfo::overviewReceived(QNetworkReply *recivedData)
 {
     if ( recivedData->request() == *this->lastOverviewNetworkRequest )
     {
@@ -201,13 +201,13 @@ void GetMovieInfo::processSelectedMedia()
 
                 // GET POSTER
                 QNetworkAccessManager *posterRequestManager = new QNetworkAccessManager(this);
-                connect( posterRequestManager, SIGNAL( finished( QNetworkReply* ) ), this, SLOT( posterRecived( QNetworkReply* ) ) );
+                connect( posterRequestManager, SIGNAL( finished( QNetworkReply* ) ), this, SLOT( posterReceived( QNetworkReply* ) ) );
                 this->lastPosterNetworkRequest = new QNetworkRequest(QUrl("http://image.tmdb.org/t/p/w185"+imgPath));
                 posterRequestManager->get( *this->lastPosterNetworkRequest );
 
                 // GET OVERVIEW
                 QNetworkAccessManager *overviewRequestManager = new QNetworkAccessManager(this);
-                connect( overviewRequestManager, SIGNAL( finished( QNetworkReply* ) ), this, SLOT( overviewRecived( QNetworkReply* ) ) );
+                connect( overviewRequestManager, SIGNAL( finished( QNetworkReply* ) ), this, SLOT( overviewReceived( QNetworkReply* ) ) );
                 this->lastOverviewNetworkRequest = new QNetworkRequest (QUrl("http://api.tmdb.org/3/" + type + "/" + id + "?api_key=57983e31fb435df4df77afb854740ea9&language=en"));
                 overviewRequestManager->get( *this->lastOverviewNetworkRequest );
                 break;

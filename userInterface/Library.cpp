@@ -40,9 +40,13 @@ Library::Library( QWidget *parent) : QWidget(parent)
     this->toPublicButton = new MPushButton ( IconLoader::getIstance()->getIcon( IconLoader::UNLOCK ), "Make public" );
     connect(this->toPublicButton, SIGNAL( clicked() ), this, SLOT( toPublicPressed() ) );
 
+    this->playStopButton = new MPushButton ( IconLoader::getIstance()->getIcon( IconLoader::MOVIE ), "Reproduce" );
+    connect(this->playStopButton, SIGNAL( clicked() ), this, SLOT( playStopPressed() ) );
+
     this->mediaButtonLayout->addWidget( this->deleteMediaButton );
     this->mediaButtonLayout->addWidget( this->toPublicButton );
     this->mediaButtonLayout->addWidget( this->toPrivateButton );
+    this->mediaButtonLayout->addWidget( this->playStopButton );
 
     this->mediaVLayout->addWidget( this->mediaList );
     this->mediaVLayout->addLayout( this->mediaButtonLayout );
@@ -212,6 +216,13 @@ void Library::toPublicPressed()
             }
         }
     }
+}
+
+void Library::playStopPressed()
+{
+    QList<core::media::MediaFile*> selectedMedia = this->mediaList->selectedMedia();
+    if ( !selectedMedia.isEmpty() )
+        emit playMedia( selectedMedia.first() );
 }
 
 void Library::mediaSelected()

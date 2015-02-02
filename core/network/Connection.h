@@ -25,7 +25,7 @@ namespace core
             QString getLastError();
 
         private slots:
-            void procesMessage();
+            void processMessage();
             void closeConnection();
 
         signals:
