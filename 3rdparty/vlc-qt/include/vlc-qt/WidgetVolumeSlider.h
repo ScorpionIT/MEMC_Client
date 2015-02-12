@@ -137,6 +137,7 @@ private:
     void initWidgetVolumeSlider();
 
     bool _lock;
+    bool _changed;
 
     void lock();
     void unlock();
@@ -145,7 +146,7 @@ private:
     VlcMediaPlayer *_vlcMediaPlayer;
 
     int _currentVolume;
-
+    
     QTimer *_timer;
 };
 

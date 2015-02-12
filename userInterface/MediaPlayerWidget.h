@@ -15,7 +15,8 @@
 #include <vlc-qt/WidgetSeek.h>
 #include <vlc-qt/WidgetVolumeSlider.h>
 
-#include "userInterface/MPushButton.h"
+#include "userInterface/IconLoader.h"
+//#include "userInterface/MPushButton.h"
 #include "userInterface/Spacer.h"
 #include "core/media/MediaFile.h"
 #include "core/network/Session.h"
@@ -34,9 +35,11 @@ namespace userInterface
         VlcInstance *vlcInstance;
         VlcMediaPlayer *vlcPlayer;
         VlcWidgetVideo *videoWidget;
+        VlcWidgetVideo *fullVideoWidget;
         VlcWidgetSeek *seekWidget;
         VlcWidgetVolumeSlider *volumeSlider;
         VlcMedia *media;
+        bool fullScreen;
 
     public:
         MediaPlayerWidget(QWidget *parent = 0);
@@ -44,9 +47,11 @@ namespace userInterface
 
     public slots:
         void setMedia( core::media::MediaFile *mediaFile );
+        void setToggleFullscreen();
 
     private slots:
         void playPausePressed ();
+        void stopPressed ();
 
     };
 }

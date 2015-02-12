@@ -21,6 +21,9 @@ IconLoader::IconLoader()
     this->icons[IconLoader::DLNA_GREY] = new QPixmap( ICONPATH + "dlnagrey.png" );
     this->icons[IconLoader::DLNA_GREEN] = new QPixmap( ICONPATH + "dlnagreen.png" );
     this->icons[IconLoader::DLNA_RED] = new QPixmap( ICONPATH + "dlnared.png" );
+    this->icons[IconLoader::PLAY] = new QPixmap( ICONPATH + "play.png" );
+    this->icons[IconLoader::PAUSE] = new QPixmap( ICONPATH + "pause.png" );
+    this->icons[IconLoader::STOP] = new QPixmap( ICONPATH + "stop.png" );
 }
 
 IconLoader::~IconLoader()

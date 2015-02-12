@@ -27,6 +27,8 @@
     #include <QtGui/QFrame>
 #endif
 
+#include <QMouseEvent>
+
 #include "Enums.h"
 #include "SharedExportWidgets.h"
 #include "VideoDelegate.h"
@@ -226,14 +228,17 @@ public slots:
     */
     void setScale(const Vlc::Scale &scale);
 
-
+signals:
+  void doubleClick();
+    
 private slots:
     void applyPreviousSettings();
 
 private:
     void initWidgetVideo();
     void sync();
-
+    void mouseDoubleClickEvent(QMouseEvent * event);
+    void closeEvent(QCloseEvent *event);
     VlcMediaPlayer *_vlcMediaPlayer;
 
     QWidget *_video;
